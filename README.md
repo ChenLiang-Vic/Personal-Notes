@@ -14,7 +14,7 @@
 - [SQL语法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/SQL.md)
 - [MySQL](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/MYSQL.md)
 - [数据库系统原理](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/数据库/doc/数据库系统原理.md)
-- [leetcode-Database题解](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/leetcode-Database%E9%A2%98%E8%A7%A3.md)
+- [leetcode&牛客网SQL题解](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/leetcode%26%E7%89%9B%E5%AE%A2%E7%BD%91%E9%A2%98%E8%A7%A3.md)
 - [Redis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/Redis.md)
 ## Java
 - [java基础]()
