@@ -1,7 +1,7 @@
 ## 数据结构与算法
-- [基本数据结构]()
+- [基本数据结构](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/README.md)
 - [十大排序算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/README.md)
-- [七大查找算法]()
+- [七大查找算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/README.md)
 - [leetcode题解]()
 - [剑指offer]()
 ## 操作系统
