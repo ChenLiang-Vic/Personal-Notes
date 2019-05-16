@@ -1,0 +1,2 @@
+- [leetcode SQL练习](https://leetcode.com/problemset/database/)
+- [牛客网 SQL练习](https://www.nowcoder.com/ta/sql)
