@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 # SQL学习
 ## 基础
 ### 注意事项
@@ -11,13 +14,18 @@
 ### 注释
 SQL支持以下三种注释：
 ```sql
+<<<<<<< HEAD
 ##注释1
+=======
+# 注释1
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 CREATE DATABASE test;  -- 注释2
 /*注释3(一般用来注释SQL语句)*/
 /*CREATE DATABASE test;*/
 ```
 ## 数据库操作
 ```sql
+<<<<<<< HEAD
 ## 创建数据库
 CREATE DATABASE test;
 ## 显示数据库 
@@ -25,6 +33,15 @@ SHOW DATABASES;
 ## 使用数据库
 USE DATABASE;
 ## 删除数据库
+=======
+# 创建数据库
+CREATE DATABASE test;
+# 显示数据库 
+SHOW DATABASES;
+# 使用数据库
+USE DATABASE;
+# 删除数据库
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 DROP DATABASE test;
 ```
 ## 单表增删改查
@@ -34,6 +51,7 @@ DROP DATABASE test;
 
 ### 修改数据UPDATE
 ### 查询数据SELECT
+<<<<<<< HEAD
 products表如下图所示:
 ![products表]()
 #### 基本查询
@@ -47,6 +65,20 @@ SELECT prod_id
 FROM products;
 
 ##查询表中多个列
+=======
+
+#### 基本查询
+```sql
+# 查询表中所有列
+SELECT *
+FROM products;
+
+# 查询表中一列
+SELECT prod_id
+FROM products;
+
+# 查询表中多个列
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,prod_name,prod_price
 FROM products;
 ```
@@ -66,35 +98,59 @@ DISTINCT  **注意DISTINCT对之后的所有字段名有效**
 SELECT DISTINCT vend_id
 FROM products;
 
+<<<<<<< HEAD
 ##如果vend_id和prod_id重复相同则会去重，否则只要有一个不同则会将不同的都显示出来
+=======
+# 如果vend_id和prod_id重复相同则会去重，否则只要有一个不同则会将不同的都显示出来
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT DISTINCT vend_id,prod_price
 FROM products;
 ```
 LIMIT **注意第一行是从0开始的**
 ```sql
+<<<<<<< HEAD
 ##查询前5个
+=======
+# 查询前5个
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_name
 FROM products
 LIMIT 5; 
 
+<<<<<<< HEAD
 ##查询第2个到第8个
+=======
+# 查询第2个到第8个
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_name
 FROM products
 LIMIT 6 OFFSET 2; -- 2表示从第2行开始,6表示往后6行
 ```
 #### 排序ORDER BY
 ```sql
+<<<<<<< HEAD
 ##按单列排序
+=======
+# 按单列排序
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_name
 FROM products
 ORDER BY prod_name;
 
+<<<<<<< HEAD
 ##可以根据不显示的列排序
+=======
+# 可以根据不显示的列排序
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_name
 FROM products
 ORDER BY prod_price;
 
+<<<<<<< HEAD
 ##按多列排序  先按第一个字段名，在案第二个字段名
+=======
+# 按多列排序  先按第一个字段名，在案第二个字段名
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,prod_name,prod_price 
 FROM products
 ORDER BY prod_price,prod_name;
@@ -105,12 +161,20 @@ ORDER BY 3,2;  --先按第三列排序后按第二列排序，和上面效果一
 ```
 **指定排序顺序可以使用ASC(升序)和DESC(降序)，不写的话默认是ASC(升序)**
 ```sql
+<<<<<<< HEAD
 ##降序排序
+=======
+# 降序排序
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_name
 FROM products
 ORDER BY prod_name DESC;
 
+<<<<<<< HEAD
 ##按第一个字段名降序，第二个字段名升序
+=======
+# 按第一个字段名降序，第二个字段名升序
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,prod_name,prod_price 
 FROM products
 ORDER BY prod_price DESC,prod_name ASC;
@@ -120,27 +184,47 @@ ORDER BY prod_price DESC,prod_name ASC;
 **=　 >　　<　　>=　　<=　　<>　　IS NULL　　BETWEEN**
 **注意：如果条件中的值为字符，必须使用单引号括起来**
 ```sql
+<<<<<<< HEAD
 ##商品价格低于10
+=======
+# 商品价格低于10
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,prod_price 
 FROM products
 WHERE prod_price < 10;
 
+<<<<<<< HEAD
 ##商品价格不等于3.49
+=======
+# 商品价格不等于3.49
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,prod_price 
 FROM products
 WHERE prod_price <> 3.49;
 
+<<<<<<< HEAD
 ##商品价格在5到10之间
+=======
+# 商品价格在5到10之间
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,prod_price 
 FROM products
 WHERE prod_price BETWEEN 5 AND 10;
 
+<<<<<<< HEAD
 ##客户邮件为空的id，name email
+=======
+# 客户邮件为空的id，name email
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT cust_id,cust_name,cust_email
 FROM customers
 WHERE cust_email IS NULL;
 
+<<<<<<< HEAD
 ##客户邮件不为空的id，name email
+=======
+# 客户邮件不为空的id，name email
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT cust_id,cust_name,cust_email
 FROM customers
 WHERE cust_email IS NOT NULL;
@@ -152,12 +236,20 @@ AND　　OR　　IN　　NOT
 2. **从下面的例子中可以看到OR和IN实现的功能相同，但是相同情况下IN比OR查询速度快，并且后面可以跟其他SQL语句**
 3. **大多数DBMS允许使用NOT否定任何条件**
 ```sql
+<<<<<<< HEAD
 ##AND就是与操作
+=======
+# AND就是与操作
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,prod_price,prod_name
 FROM products
 WHERE vend_id = 'DLL01' AND prod_price <= 4;
 
+<<<<<<< HEAD
 ##OR就是或操作
+=======
+# OR就是或操作
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,vend_id,prod_price
 FROM products
 WHERE vend_id = 'DLL01' OR vend_id = 'FNG01';
@@ -166,12 +258,20 @@ SELECT prod_id,vend_id,prod_price
 FROM products
 WHERE vend_id = 'DLL01' OR prod_price = 11.99;
 
+<<<<<<< HEAD
 ##IN用来指定条件范围，范围中的每个条件都可以进行匹配
+=======
+# IN用来指定条件范围，范围中的每个条件都可以进行匹配
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,vend_id,prod_price
 FROM products
 WHERE vend_id IN ('DLL01','FNG01');
 
+<<<<<<< HEAD
 ## NOT否定其后跟的任何条件
+=======
+# NOT否定其后跟的任何条件
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,vend_id,prod_price
 FROM products
 WHERE vend_id NOT IN ('DLL01','FNG01');
@@ -193,22 +293,38 @@ WHERE NOT prod_price < 4;
 3. **能使用其他SQL命令替代时就用其他命令，尽可能不适用通配符，如果非要用也不要在搜索开始位置使用通配符**
 
 ```sql
+<<<<<<< HEAD
 ##查找以Fish开头的prod_name
+=======
+# 查找以Fish开头的prod_name
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,prod_name
 FROM products
 WHERE prod_name LIKE 'Fish%';
 
+<<<<<<< HEAD
 ##查找含有bean bag的prod_name
+=======
+# 查找含有bean bag的prod_name
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_name
 FROM products
 WHERE prod_name LIKE '%bean bag%'
 
+<<<<<<< HEAD
 ##匹配以F开头y结尾的prod_name
+=======
+# 匹配以F开头y结尾的prod_name
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_name
 FROM products
 WHERE prod_name LIKE 'F%y'
 
+<<<<<<< HEAD
 ##匹配vend_id中的DLL01
+=======
+# 匹配vend_id中的DLL01
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT vend_id
 FROM products
 WHERE vend_id LIKE 'D_L_1'
@@ -217,7 +333,11 @@ WHERE vend_id LIKE 'D_L_1'
 存储在表中的数据都不是应用程序所需要的。我们需要直接从数据库中检索出转换、计算或格式化过的数据，而不是检索出数据，然后再在客户端应用程序中重新格式化。
 - 使用CONCAT()进行字段拼接
 ```sql
+<<<<<<< HEAD
 ##将vend_name和vend_country拼接起来只显示一列
+=======
+# 将vend_name和vend_country拼接起来只显示一列
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT CONCAT(vend_name,'(',vend_country,')')
 FROM vendors;
 ```
@@ -234,7 +354,11 @@ FROM vendors;
 - 执行计算
 **支持+　　-　　*　/运算**
 ```sql
+<<<<<<< HEAD
 ##数量乘以单价
+=======
+# 数量乘以单价
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 SELECT prod_id,quantity,item_price,quantity*item_price AS expanded_price
 FROM orderitems
 WHERE order_num = 20008;
@@ -254,6 +378,7 @@ SELECT NOW();  --返回当前时间
 | MAX() | 返回某列的最大值 |
 | MIN() | 返回某列的最小值 |
 | SUM() |返回某列值之和 |
+<<<<<<< HEAD
 
 AVG() 会忽略 NULL 行。
 
@@ -261,6 +386,42 @@ AVG() 会忽略 NULL 行。
 ```
 
 使用 DISTINCT 可以让汇总函数值汇总不同的值。
+=======
+注意：
+1. **因为汇总函数结果只有一行，所以不能和其他字段名一块使用，但可以几个汇总函数一块使用(因为都是一行)**
+2. **AVG()和COUNT()会忽略NULL行**
+3. **WHERE子句中不允许出现汇总函数**
+```sql
+# 商品价格平均值
+SELECT AVG(prod_price) AS avg_price
+FROM products;
+
+# MAX()用来查找最大值
+SELECT MAX(prod_price) AS max_price
+FROM products;
+
+# MIN()用来查找最小值
+SELECT MIN(prod_price) AS max_price
+FROM products;
+
+# 可以用COUNTT(*)用来计算行数
+SELECT COUNT(*) AS prod_count
+FROM products;
+
+# SUM()用来求和
+SELECT SUM(quantity) AS sum_quatity
+FROM orderitems;
+
+# SUM()用来求计算式的和
+SELECT SUM(quantity*item_price) AS sum_money
+FROM orderitems;
+```
+AVG() COUNT() SUM()可以使用DISTINCT进行去重,MAX()和MIN()去重没有意义
+```sql
+SELECT AVG(DISTINCT prod_price) AS avg_price
+FROM products;
+```
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 ##### 文本处理函数
 | 函数  | 说明  |
 | :---: | :---: |
@@ -274,10 +435,16 @@ AVG() 会忽略 NULL 行。
 | SOUNDEX() | 转换为语音值 |
 其中，SOUNDEX() 可以将一个字符串转换为描述其语音表示的字母数字模式。
 ```sql
+<<<<<<< HEAD
 ##查询prod_name和其名字长度
 SELECT prod_name,LENGTH(prod_name)
 FROM products;
 
+=======
+# 查询prod_name和其名字长度
+SELECT prod_name,LENGTH(prod_name)
+FROM products;
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 ```
 ##### 日期和时间处理函数
 - 日期格式：YYYY-MM-DD
@@ -304,6 +471,11 @@ FROM products;
 | YEAR() |返回一个日期的年份部分|
 
 ```sql
+<<<<<<< HEAD
+=======
+# 查询当前时间
+SELECT NOW();
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
 ```
 ##### 数值处理函数
 | 函数 | 说明 |
@@ -318,6 +490,7 @@ FROM products;
 | PI() | 圆周率 |
 | RAND() | 随机数 |
 ```sql
+<<<<<<< HEAD
 
 ```
 ##### 
@@ -330,3 +503,117 @@ FROM products;
 
 可以用 AS 给列名、计算字段和表名取别名，给表名取别名是为了简化 SQL 语句以及连接相同表。
 ## 二维表
+=======
+# 表中没有什么可以计算的，就直接验证下
+SELECT ABS(-1)  -- 结果为1
+```
+#### 分组查询和分组筛选
+##### 分组查询GROUP BY
+注意：
+1. **使用了GROUP BY进行分组后,SELECT语句中只允许出现分组字段和多行函数**
+2. **如果是多字段分组，先按第一字段进行分组，后按照第二字段进行分组，依次类推**
+```sql
+# 查询不同供应商提供的产品总数
+SELECT vend_id,COUNT(*)
+FROM products
+GROUP BY vend_id;
+
+# 查询不同供应商提供的不同价格的产品总数
+SELECT vend_id,prod_price,COUNT(*)
+FROM products
+GROUP BY vend_id,prod_price;  -- 先按第一个字段分组，再按第二个字段分组
+```
+##### 分组筛选HAVING
+针对分组进行分组后的数据筛选，允许使用多行函数
+HAVING和WHERE的区别：
+1. **最核心的区别是HAVING是对分组进行筛选而WHERE是对字段进行筛选**
+2. having关键字必须和group by一块使用，不能单独使用
+3.  where子句不允许出现多行函数，having子句允许出现多行函数
+```sql
+# 查询不同供应商提供的不同价格的产品总数大于1的产品信息
+SELECT vend_id,prod_price,COUNT(*) AS 'prod_num'
+FROM products
+GROUP BY vend_id,prod_price
+HAVING prod_num>1;
+
+# 查询不同供应商提供的产品价格大于4的并且产品总数大于1的产品信息
+SELECT vend_id,prod_price,COUNT(*) AS 'prod_num'
+FROM products
+WHERE prod_price > 4
+GROUP BY vend_id
+HAVING prod_num>1;
+```
+#### SELECT语句顺序
+```sql
+SELECT 
+FROM
+WHERE
+GROUP BY
+HAVING
+ORDER BY
+```
+#### 子查询
+**当查询条件不明确时，考虑使用子查询。这里的不明确是指没有具体的数值，需要经过一次查询后才能获得的数值。**
+
+注意：**作为子查询的SELECT语句只能查询单个列，查询多个列时会出错。**
+##### 查询结果只有一个数据
+```sql
+#查询比平均价格高的商品信息
+SELECT *
+FROM products
+WHERE prod_price > (SELECT AVG(DISTINCT prod_price) FROM products);
+```
+##### 查询结果为一个字段的数据
+使用ANY(任意)　　ALL(所有)　　IN(任意存在)关键字
+```sql
+#查询产品价格高于DLL01提供的产品信息
+SELECT *
+FROM products
+WHERE prod_price > ALL(SELECT prod_price FROM products WHERE vend_id = 'DLL01');
+#查询产品价格高于任意一个DLL01提供的产品信息
+SELECT *
+FROM products
+WHERE prod_price > ANY(SELECT prod_price FROM products WHERE vend_id = 'DLL01');
+#查询产品价格与DLL01提供的产品价格相同且低于4的产品信息
+SELECT *
+FROM products
+WHERE prod_price IN (SELECT prod_price FROM products WHERE vend_id = 'DLL01') AND prod_price<4;
+```
+子查询除了可以在where子句中对数据进行过滤外，还可以作为计算字段。
+```sql
+SELECT cust_name,cust_state,(SELECT COUNT(*) FROM orders WHERE orders.cust_id = customers.cust_id) AS orders
+FROM Customers
+ORDER BY cust_name;
+```
+## 多表联合查询
+1. **联结用于联结多个表，使用JOIN关键字，并且条件语句使用ON而不是WHERE。**
+
+2. **联结可以替换子查询，并且比子查询的效率一般会更快。**
+
+3. **可以用AS给列名、计算字段和表名取别名，给表名取别名是为了简化SQL语句以及连接相同表。**
+
+### 自然联结
+### 外联结
+#### 左外联结
+#### 右外联结
+#### 全外联结
+### 自联结
+
+```sql
+SELECT 内容 FROM 表名1 
+INNER JOIN 表名2 
+ON 连接条件
+INNER JOIN 表名3 
+ON 连接条件
+WHERE 普通筛选条件
+GROUP BY 分组
+HAVING 多行函数筛选
+ORDER BY 排序
+```
+## 二维表操作
+
+### 二维表创建
+### 二维表维护
+
+## 用户管理
+>>>>>>> e0c6f931ddb2e49a2da647a6c253f50df8b02a3b
