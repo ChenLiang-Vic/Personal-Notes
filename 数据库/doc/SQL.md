@@ -1,4 +1,3 @@
-
 # SQL学习
 ## 基础
 ### 注意事项
@@ -395,16 +394,65 @@ ORDER BY
 ```
 #### 子查询
 **当查询条件不明确时，考虑使用子查询。这里的不明确是指没有具体的数值，需要经过一次查询后才能获得的数值。**
-```sql
 
+注意：**作为子查询的SELECT语句只能查询单个列，查询多个列时会出错。**
+##### 查询结果只有一个数据
+```sql
+#查询比平均价格高的商品信息
+SELECT *
+FROM products
+WHERE prod_price > (SELECT AVG(DISTINCT prod_price) FROM products);
+```
+##### 查询结果为一个字段的数据
+使用ANY(任意)　　ALL(所有)　　IN(任意存在)关键字
+```sql
+#查询产品价格高于DLL01提供的产品信息
+SELECT *
+FROM products
+WHERE prod_price > ALL(SELECT prod_price FROM products WHERE vend_id = 'DLL01');
+#查询产品价格高于任意一个DLL01提供的产品信息
+SELECT *
+FROM products
+WHERE prod_price > ANY(SELECT prod_price FROM products WHERE vend_id = 'DLL01');
+#查询产品价格与DLL01提供的产品价格相同且低于4的产品信息
+SELECT *
+FROM products
+WHERE prod_price IN (SELECT prod_price FROM products WHERE vend_id = 'DLL01') AND prod_price<4;
+```
+子查询除了可以在where子句中对数据进行过滤外，还可以作为计算字段。
+```sql
+SELECT cust_name,cust_state,(SELECT COUNT(*) FROM orders WHERE orders.cust_id = customers.cust_id) AS orders
+FROM Customers
+ORDER BY cust_name;
 ```
 ## 多表联合查询
-1. **连接用于连接多个表，使用JOIN关键字，并且条件语句使用ON而不是WHERE。**
+1. **联结用于联结多个表，使用JOIN关键字，并且条件语句使用ON而不是WHERE。**
 
-2. **连接可以替换子查询，并且比子查询的效率一般会更快。**
+2. **联结可以替换子查询，并且比子查询的效率一般会更快。**
 
-3. **可以用 AS 给列名、计算字段和表名取别名，给表名取别名是为了简化 SQL 语句以及连接相同表。**
-### 
-###
-###
-## 二维表
+3. **可以用AS给列名、计算字段和表名取别名，给表名取别名是为了简化SQL语句以及连接相同表。**
+
+### 自然联结
+### 外联结
+#### 左外联结
+#### 右外联结
+#### 全外联结
+### 自联结
+
+```sql
+SELECT 内容 FROM 表名1 
+INNER JOIN 表名2 
+ON 连接条件
+INNER JOIN 表名3 
+ON 连接条件
+WHERE 普通筛选条件
+GROUP BY 分组
+HAVING 多行函数筛选
+ORDER BY 排序
+```
+## 二维表操作
+
+### 二维表创建
+### 二维表维护
+
+## 用户管理
