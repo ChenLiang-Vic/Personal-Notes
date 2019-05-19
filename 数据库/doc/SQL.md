@@ -165,7 +165,8 @@ LIMIT 5;
 # 查询第2个到第8个
 SELECT prod_name
 FROM products
-LIMIT 6 OFFSET 2; -- 2表示从第2行开始,6表示往后6行
+LIMIT 1,7; -- 1表示从第2行开始,7表示往后7行且不包含第7个
+-- 比如查找第3个可以写成2,1
 ```
 #### 排序ORDER BY
 ```sql
