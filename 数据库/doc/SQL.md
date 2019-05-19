@@ -1,13 +1,55 @@
+<!-- TOC -->
 
+- [基础](#基础)
+- [数据库操作](#数据库操作)
+- [单表增删改查](#单表增删改查)
+    - [添加数据INSERT](#添加数据insert)
+    - [删除数据DELETE](#删除数据delete)
+    - [修改数据UPDATE](#修改数据update)
+    - [查询数据SELECT](#查询数据select)
+        - [基本查询](#基本查询)
+        - [使用别名](#使用别名)
+        - [去重DISTINCT和限制行数LIMIT](#去重distinct和限制行数limit)
+        - [排序ORDER BY](#排序order-by)
+        - [条件筛选WHERE](#条件筛选where)
+        - [计算字段和拼接](#计算字段和拼接)
+        - [数据处理函数](#数据处理函数)
+        - [分组查询和分组筛选](#分组查询和分组筛选)
+        - [SELECT语句顺序](#select语句顺序)
+        - [子查询](#子查询)
+- [多表联合查询](#多表联合查询)
+    - [自然联结NATURAL JOIN](#自然联结natural-join)
+    - [内联结(等值联结)](#内联结等值联结)
+    - [外联结](#外联结)
+        - [左外联结LEFT OUTER JOIN](#左外联结left-outer-join)
+        - [右外联结RIGHT OUTER JOIN](#右外联结right-outer-join)
+        - [全外联结FULL OUTER JOIN](#全外联结full-outer-join)
+    - [自联结](#自联结)
+    - [加上联结后SELECT的顺序](#加上联结后select的顺序)
+- [组合查询](#组合查询)
+- [二维表操作](#二维表操作)
+    - [二维表创建](#二维表创建)
+        - [MYSQL字段类型](#mysql字段类型)
+        - [约束](#约束)
+    - [二维表维护](#二维表维护)
+    - [删除二维表](#删除二维表)
+- [视图](#视图)
+- [存储过程](#存储过程)
+- [事务](#事务)
+- [游标](#游标)
+- [索引](#索引)
+- [触发器](#触发器)
+- [用户管理](#用户管理)
+
+<!-- /TOC -->
 ## 基础
-### 注意事项
 1. 模式定义了数据如何存储、存储什么样的数据以及数据如何分解等信息，数据库和表都有模式。
 
 2. 主键的值不允许修改，也不允许复用（不能使用已经删除的主键值赋给新数据行的主键）。
 
 3. SQL 语句不区分大小写，但是数据库表名、列名和值是否区分依赖于具体的 DBMS 以及配置。
 4. 对于;单行SQL语句可以不写,多行SQL语句必须要写,所以不管单行多行写上;即可
-### 注释
+
 SQL支持以下三种注释：
 ```sql
 # 注释1
@@ -901,7 +943,46 @@ WHERE col5 = val;
 使用视图时基本和普通的表没有差别，除了在进行增删改数据时存在某些限制。具体情况：
 1. **视图与表是一对一关系情况**：如果没有其它约束（**如视图中没有的字段，在基本表中是必填字段情况**），是可以进行**增删改**数据操作
 2. **视图与表是一对多关系情况**：如果只修改一张表的数据，且没有其它约束（**如视图中没有的字段，在基本表中是必填字段情况**），是可以进行**改**数据操作。
+
 ## 存储过程
+SQL语句需要先编译然后执行，而**存储过程（Stored Procedure）是一组为了完成特定功能的SQL语句集，经编译后存储在数据库中，用户通过指定存储过程的名字并给定参数（如果该存储过程带有参数）来调用执行它**。
+
+数据库中的存储过程可以看做是对编程中面向对象方法的模拟，它允许控制数据的访问方式。
+
+使用存储过程的好处：
+
+- 代码封装，保证了一定的安全性；
+- 代码复用；
+- 由于是预先编译，因此具有很高的性能。
+
+命令行中创建存储过程需要自定义分隔符，因为命令行是以 ; 为结束符，而存储过程中也包含了分号，因此会错误把这部分分号当成是结束符，造成语法错误。
+包含 in、out 和 inout 三种参数。
+
+给变量赋值都需要用 select into 语句。
+
+每次只能给一个变量赋值，不支持集合的操作。
+```sql
+delimiter //
+CREATE PROCEDURE myprocedure (OUT ret INT)
+BEGIN
+
+DECLARE y INT ; 
+SELECT sum(col1)
+FROM mytable
+INTO y ; 
+SELECT y * y INTO ret ;
+	
+END//
+
+delimiter;
+```
+```sql
+call myprocedure(@ret);
+select @ret;
+```
+[存储过程详解](https://www.cnblogs.com/mark-chan/p/5384139.html)
+
+
 ## 事务
 事务处理是一种机制，通过确保成批的 SQL 操作要么完全执行，要么完全不执行，来维护数据库的完整性，保证数据库不包含不完整的操作结果
 - **事务**（transaction）指一组 SQL 语句；
@@ -939,7 +1020,26 @@ COMMIT
 3. 取出数据；
 4. 关闭游标；
 ```sql
+delimiter //
+CREATE PROCEDURE myprocedure (OUT ret INT)
+BEGIN
 
+DECLARE done boolean DEFAULT 0 ;
+DECLARE mycursor CURSOR FOR SELECT
+	col1
+FROM
+	mytable ; # 定义了一个 continue handler，当 sqlstate '02000' 这个条件出现时，会执行 set done = 1
+DECLARE CONTINUE HANDLER FOR SQLSTATE '02000'
+SET done = 1 ; OPEN mycursor ;
+REPEAT
+	FETCH mycursor INTO ret ; SELECT
+		ret ; UNTIL done
+	END
+	REPEAT
+		; CLOSE mycursor ;
+	END//
+
+delimiter ;
 ```
 ## 索引
 索引用来排序数据以加快搜索和排序操作的速度。可以在一个或多个列上定义索引，使 DBMS保存其内容的一个排过序的列表。在定义了索引后，DBMS 以使用书的索引类似的方法使用它
