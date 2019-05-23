@@ -83,6 +83,25 @@ WHERE o.CustomerId is NULL;
 ```
 ## 184. Department Highest Salary
 ```sql
+# Write your MySQL query statement below
+/*一开始是这样写的，问题：
+使用了GROUP BY进行分组后,SELECT语句中只允许出现分组字段和多行函数
+SELECT d.Name AS Department,e.Name AS Employee,MAX(e.Salary)
+FROM Employee AS e
+INNER JOIN Department AS d
+ON e.DepartmentId = d.Id
+GROUP BY e.DepartmentId;
+*/
+
+-- 创建一个只包含DepartmentId和MAX(Salary)的临时表进行分组
+SELECT d.Name AS Department,e.Name AS Employee,t.Salary
+FROM Employee AS e
+INNER JOIN Department AS d
+ON e.DepartmentId = d.Id
+INNER JOIN (SELECT DepartmentId,MAX(Salary) AS Salary
+            FROM Employee
+            GROUP BY DepartmentId) AS t
+ON e.DepartmentId = t.DepartmentId AND e.Salary = t.Salary;
 ```
 ## 185. Department Top Three Salaries
 ```sql
@@ -158,6 +177,8 @@ END;
 ```
 ----
 付费题目  大部分为Midium难度
+## 569. Median Employee Salary
+
 ## 570. Managers with at Least 5 Direct Reports
 ```sql
 
