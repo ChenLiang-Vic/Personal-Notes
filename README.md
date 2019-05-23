@@ -6,9 +6,11 @@
 - [剑指offer](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87offer/README.md)
 ## 操作系统
 - [操作系统](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/README.md)
+- [操作系统实验](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/doc/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C.md)
 - [linux]()
 ## 计算机网络
 - [计算机网络](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/README.md)
+- [Wireshark实验](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/doc/wireshark%E5%AE%9E%E9%AA%8C.md)
 - [HTTP](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/doc/HTTP.md)
 ## 数据库
 - [SQL语法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/SQL.md)
@@ -30,5 +32,5 @@
 ## python
 ## 工具
 ## 编码实践
-- [代码可读性]()
+- [代码可读性](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/doc/%E4%BB%A3%E7%A0%81%E5%8F%AF%E8%AF%BB%E6%80%A7.md)
 - [代码风格规范]()
