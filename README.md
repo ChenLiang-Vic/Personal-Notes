@@ -25,9 +25,9 @@
 - [java并发]()
 - [java虚拟机]()
 ## 框架
-- [Mybatis](https://github.com/ChenLiang-Vic/Personal-notes/tree/master/Mybatis)
-- [Spring](https://github.com/ChenLiang-Vic/Personal-notes/tree/master/Spring)
-- [SpringMVC](https://github.com/ChenLiang-Vic/Personal-notes/tree/master/SpringMVC) 
+- [Mybatis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/doc/README.md)
+- [Spring]()
+- [SpringMVC]() 
 - [SpringBoot]()
 ## python
 ## 工具
