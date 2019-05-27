@@ -19,11 +19,11 @@
 - [数据库设计](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1.md)
 - [Redis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/Redis.md)
 ## Java
-- [java基础]()
-- [java容器]()
-- [java I/O]()
-- [java并发]()
-- [java虚拟机]()
+- [java基础](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%9F%BA%E7%A1%80.md)
+- [java容器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%AE%B9%E5%99%A8.md)
+- [java I/O](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%20IO.md)
+- [java并发](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%B9%B6%E5%8F%91.md)
+- [java虚拟机](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E8%99%9A%E6%8B%9F%E6%9C%BA.md)
 ## 框架
 - [Mybatis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/doc/README.md)
 - [Spring](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Spring/doc/README.md)
