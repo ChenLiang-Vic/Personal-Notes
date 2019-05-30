@@ -1,6 +1,6 @@
 
 ## 一、运行时数据区域
-<div align="center">![jvm数据区域]()</div>
+<div align="center">![jvm数据区域](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/jvm%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%9F%9F%20.png)</div>
 
 ### 程序计数器
 **程序计数器是一块较小的内存空间**，可以看做是**当前线程所执行的字节码的行号指示器**。 字节码解释器工作时就是**通过改变这个计数器的值来选取下一跳需要执行的字节码指令**，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个技术器完成
@@ -14,7 +14,7 @@
 ### Java虚拟机栈
 每个**方法在执行的同时会创建一个栈帧**用于存储局部变量表、操作数栈、常量池引用等信息。从方法调用直至执行完成的过程，对应着一个栈帧在 Java 虚拟机栈中入栈和出栈的过程。  
 
-<div align=center>![java虚拟机栈]()</div>
+<div align=center>![java虚拟机栈](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88.png)</div>
 
 可以通过 -Xss 这个虚拟机参数来指定每个线程的 Java 虚拟机栈内存大小：，
 
@@ -36,7 +36,7 @@ java虚拟机栈可能抛出以下异常：
 
 本地方法一般是用其它语言（C、C++ 或汇编语言等）编写的，并且被编译为基于本机硬件和操作系统的程序，对待这些方法需要特别处理。
 
-<div align=center>![本地方法栈]()</div>
+<div align=center>![本地方法栈](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88.png)</div>
 
 与虚拟机栈一样，本地方法栈区域也会抛出StackOverflowError和 OutOfMemoryError异常
 ### Java堆
@@ -112,14 +112,14 @@ public class Test {
 javac Test.java  //编译
 java -XX:+PrintGCDetails Test  //运行 -XX:+PrintGCDetails表示输出GC详细日志
 ```
-<div align=center>![计数算法]()</div>
+<div align=center>![计数算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E8%AE%A1%E6%95%B0%E7%AE%97%E6%B3%95.png)</div>
 
 在上述代码中，a 与 b 引用的对象实例互相持有了对象的引用，因此当我们把对 a 对象与 b 对象的引用去除之后，由于两个对象还存在互相之间的引用，导致两个 Test 对象无法被回收。但实验结果显示，虚拟机并没有因为这两个对相关相互引用就不回收它们，因此**虚拟机并不是通过引用计数算法来判断对象是否存活**。
 
 #### 2.可达性分析算法
 
 算法思想是：以 GC Roots的对象为起始点向下进行搜索，可达的对象都是存活的，不可达的对象可被回收。如下图所示,对象object5、object6、object7虽然互相关联，但是它们到GC Roots是不可达的，因此会被判定为可回收对象
-![]()
+<div align=center>![可达性分析](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95.png)</div>
 
 Java语言中，可作为GC Roots的对象包括下面几种：
 
