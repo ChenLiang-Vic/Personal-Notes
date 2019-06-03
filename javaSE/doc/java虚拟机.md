@@ -241,7 +241,7 @@ obj = null;
 为了避免内存溢出，在大量使用反射和动态代理的场景都需要虚拟机具备类卸载功能。
 ### 垃圾收集算法
 #### 1.标记-清除算法
-![标记清除算法]()  
+![标记清除算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4.png)  
 
 标记-清除算法分为两个阶段：
 在标记阶段，程序会检查每个对象是否为活动对象，如果是活动对象，则程序会在对象头部打上标记。  
@@ -255,7 +255,7 @@ obj = null;
 - 会产生大量不连续的内存碎片，导致无法给大对象分配内存，从而不得不提前触发另一次垃圾收集动作。
 
 #### 2.复制算法
-![复制算法]()
+![复制算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E5%A4%8D%E5%88%B6.png)
 
 它将可用内存按容量划分为大小相等的两块，每次只使用其中一块。当着一块的内存用完了，就将还存活的对象复制到另一块上面，然后再把已使用过的内存空间一次清理掉。
 
@@ -268,7 +268,7 @@ obj = null;
 HotSpot 虚拟机的 Eden 和 Survivor 大小比例默认为 8:1，保证了内存的利用率达到 90%。如果每次回收有多于 10% 的对象存活，那么一块 Survivor 就不够用了，此时需要依赖于老年代进行空间分配担保，也就是借用老年代的空间存储放不下的对象。
 
 #### 3.标记-整理算法
-![标记整理算法]()
+![标记整理算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png)
 标记过程与标记-清除算法一样，但是后续不是直接对可回收对象进行清理而是让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存。
 
 优点:不会产生内存碎片
@@ -283,13 +283,68 @@ HotSpot 虚拟机的 Eden 和 Survivor 大小比例默认为 8:1，保证了内�
 - 新生代使用：复制算法
 - 老年代使用：标记 - 清除 或者 标记 - 整理 算法
 ### 垃圾收集器
+![垃圾收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8.png)
+
+以上是 HotSpot 虚拟机中的 7 个垃圾收集器，连线表示垃圾收集器可以配合使用。
+
+- -单线程与多线程：单线程指的是垃圾收集器只使用一个线程，而多线程使用多个线程；
+- 串行与并行：串行指的是垃圾收集器与用户程序交替执行，这意味着在执行垃圾收集的时候需要停顿用户程序；并行指的是垃圾收集器和用户程序同时执行。除了 CMS 和 G1 之外，其它垃圾收集器都是以串行的方式执行。
 #### 1.Serial收集器
+Serial/Serial Old收集器
+![Serial收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/Serial%E6%94%B6%E9%9B%86%E5%99%A8.png)
+
+Serial 翻译为串行，也就是说它以串行的方式执行。
+
+它是单线程的收集器，只会使用一个线程进行垃圾收集工作。
+
+它的优点是简单高效，在单个 CPU 环境下，由于没有线程交互的开销，因此拥有最高的单线程收集效率。
+
+它是 Client 场景下的默认新生代收集器，因为在该场景下内存一般来说不会很大。它收集一两百兆垃圾的停顿时间可以控制在一百多毫秒以内，只要不是太频繁，这点停顿时间是可以接受的。
 #### 2.ParNew收集器
+ParNew/Serial Old收集器
+![ParNew收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/Par%20New%E6%94%B6%E9%9B%86%E5%99%A8.png)
+
+它是 Serial 收集器的多线程版本。
+
+它是 Server 场景下默认的新生代收集器，除了性能原因外，主要是因为除了 Serial 收集器，只有它能与 CMS 收集器配合使用。
 #### 3.Parallel Scavenge收集器
+
+
 #### 4.Serial Old收集器
+Serial/Serial Old收集器
+![Serial Old收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/SerialOld%E6%94%B6%E9%9B%86%E5%99%A8.png)
+
+是 Serial 收集器的老年代版本，同样是一个单线程收集器，使用"标记-整理"算法。
+
+Serial Old收集器主要是给 Client 场景下的虚拟机使用。如果用在 Server 场景下，它有两大用途：
+
+- 在 JDK 1.5 以及之前版本（Parallel Old 诞生以前）中与 Parallel Scavenge 收集器搭配使用。
+- 作为 CMS 收集器的后备预案，在并发收集发生 Concurrent Mode Failure 时使用。
+
 #### 5.Parallel Old收集器
+Parallel Scavenge/Parallel Old收集器
+![Parallel Old收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/Parallel%20Old%E6%94%B6%E9%9B%86%E5%99%A8.png)  
+
+Parallel Old收集器是 Parallel Scavenge 收集器的老年代版本。使用多线程和"标记-整理"算法。
+
+在注重吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge 加 Parallel Old 收集器。
+
 #### 6.CMS收集器
+CMS收集器
+![CMS收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/CMS%E6%94%B6%E9%9B%86%E5%99%A8.png)
+
+CMS（Concurrent Mark Sweep)收集器是一种以获取最短回收停顿时间为目标的收集器。Mark Sweep 指的是标记 - 清除算法。
+
 #### 7.G1收集器
+G1收集器
+![G1收集器1](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/G1%E6%94%B6%E9%9B%86%E5%99%A81.png)
+
+![G1收集器2](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/G1%E6%94%B6%E9%9B%86%E5%99%A82.png)
+
+![G1收集器3](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/G1%E6%94%B6%E9%9B%86%E5%99%A83.png)
+
 ## 三、内存分配与回收策略
 
 ## 四、类加载机制
+## 五、内存模型
+## 六、线程安全与锁优化
