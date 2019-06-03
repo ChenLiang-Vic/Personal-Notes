@@ -288,8 +288,6 @@ HotSpot 虚拟机的 Eden 和 Survivor 大小比例默认为 8:1，保证了内�
 
 以上是 HotSpot 虚拟机中的 7 个垃圾收集器，连线表示垃圾收集器可以配合使用。
 
-- -单线程与多线程：单线程指的是垃圾收集器只使用一个线程，而多线程使用多个线程；
-- 串行与并行：串行指的是垃圾收集器与用户程序交替执行，这意味着在执行垃圾收集的时候需要停顿用户程序；并行指的是垃圾收集器和用户程序同时执行。除了 CMS 和 G1 之外，其它垃圾收集器都是以串行的方式执行。
 #### 1.Serial收集器
 Serial/Serial Old收集器
 ![Serial收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/Serial%E6%94%B6%E9%9B%86%E5%99%A8.png)
@@ -336,13 +334,48 @@ CMS收集器
 
 CMS（Concurrent Mark Sweep)收集器是一种以获取最短回收停顿时间为目标的收集器。Mark Sweep 指的是标记 - 清除算法。
 
+整个运行过程分为4个步骤：
+1. 初始标记：仅仅只是标记一下 GC Roots 能直接关联到的对象，速度很快，需要停顿。
+2. 并发标记：进行 GC Roots Tracing 的过程，它在整个回收过程中耗时最长，不需要停顿。
+3. 重新标记：为了修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，需要停顿。
+4. 并发清除：不需要停顿。
+
+由于整个过程中耗时最长的并发标记和并发清除过程收集器线程都可以与用户线程一起工作，所以，总体上来说CMS收集器的内存回收过程是与用户线程一起并发执行的。
+
+具有以下缺点：
+
+- 吞吐量低：低停顿时间是以牺牲吞吐量为代价的，导致 CPU 利用率不够高。
+- 无法处理浮动垃圾，可能出现 Concurrent Mode Failure。浮动垃圾是指并发清除阶段由于用户线程继续运行而产生的垃圾，这部分垃圾只能到下一次 GC 时才能进行回收。由于浮动垃圾的存在，因此需要预留出一部分内存，意味着 CMS 收集不能像其它收集器那样等待老年代快满的时候再回收。如果预留的内存不够存放浮动垃圾，就会出现 Concurrent Mode Failure，这时虚拟机将临时启用 Serial Old 来替代 CMS。
+- 标记 - 清除算法导致的空间碎片，往往出现老年代空间剩余，但无法找到足够大连续空间来分配当前对象，不得不提前触发一次 Full GC
+
 #### 7.G1收集器
-G1收集器
+G1（Garbage-First），它是一款面向服务端应用的垃圾收集器，在多 CPU 和大内存的场景下有很好的性能。HotSpot 开发团队赋予它的使命是未来可以替换掉 CMS 收集器。
+
 ![G1收集器1](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/G1%E6%94%B6%E9%9B%86%E5%99%A81.png)
 
 ![G1收集器2](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/G1%E6%94%B6%E9%9B%86%E5%99%A82.png)
 
 ![G1收集器3](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/G1%E6%94%B6%E9%9B%86%E5%99%A83.png)
+
+#### 垃圾收集相关常用参数
+|参数|意义|
+|:--:|:--:|
+|UseSerialGC|	虚拟机运行在Client模式下的默认值，打开此开关后，使用Serial + Serial Old的收集器组合进行内存回收|
+|UseParNewGC|	打开此开关后，使用ParNew + Serial Old的收集器组合进行内存回收|
+|UseConcMarkSweepGC|	打开此开关后，使用ParNew + CMS + Serial Old的收集器组合进行内存回收。Serial Old收集器将作为CMS收集器出现Concurrent Mode Failure失败后的后备收集器使用|
+|UseParallelGC|	虚拟机运行在Server模式下的默认值，打开此开关后，使用Parallel Scavenge + Serial Old（PS MarkSweep）的收集器组合进行内存回收|
+|UseParallelOldGC|	打开此开关后，使用Parallel Scavenge + Parallel Old 的收集器组合进行内存回收|
+|SurvivorRatio|	新生代中Eden区域与Survivor区域的容量比值，默认为8，代表Eden : Survivor=8:1|
+|PretenureSizeThreshold|	直接晋升到老年代的对象大小，设置这个参数后，大于这个参数的对象将直接在老年代分配|
+|MaxTenuringThreshold|	晋升到老年代的对象年龄。每个对象在坚持过一次Minor GC之后，年龄就增加1，当超过这个参数值时就进入老年代|
+|UseAdaptiveSizePolicy|	动态调整Java堆中各个区域的大小以及进入老年代的年龄|
+|HandlePromotionFailure|	是否允许分配担保失败，即老年代的剩余空间不足以应付新生代的整个Eden和Survivor区的所有对象都存活的极端情况|
+ParallelGCThreads|	设置并行GC时进行内存回收的线程数
+GCTimeRatio	|GC时间占总时间的比率，默认值为99，即允许1%的GC时间。仅使用Parallel Scavenge收集器时生效
+MaxGCPauseMillis|	设置GC的最大停顿时间。仅在使用Parallel Scavenge收集器生效
+CMSInitiatingOccupancyFraction|	设置CMS收集器在老年代空间被使用多少后触发垃圾收集，默认值为68%，仅使用CMS收集器时生效
+UseCMSCompactAtFullCollection|	设置CMS收集器在完成垃圾收集后是否要进行一次内存碎片整理。仅在使用CMS收集器时生效
+CMSFullGCsBeforeCompaction|	设置CMS收集器在进行若干次垃圾收集后再启动一次内存碎片整理。仅在使用CMS收集器时生效
 
 ## 三、内存分配与回收策略
 
