@@ -268,7 +268,8 @@ obj = null;
 HotSpot 虚拟机的 Eden 和 Survivor 大小比例默认为 8:1，保证了内存的利用率达到 90%。如果每次回收有多于 10% 的对象存活，那么一块 Survivor 就不够用了，此时需要依赖于老年代进行空间分配担保，也就是借用老年代的空间存储放不下的对象。
 
 #### 3.标记-整理算法
-![标记整理算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png)
+![标记整理算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png)  
+
 标记过程与标记-清除算法一样，但是后续不是直接对可回收对象进行清理而是让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存。
 
 优点:不会产生内存碎片
