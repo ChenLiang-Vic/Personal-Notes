@@ -1,4 +1,3 @@
-
 # leetcode
 
 [leetcode SQL练习](https://leetcode.com/problemset/database/)
@@ -359,10 +358,133 @@ SELECT (
 ) AS growth;
 ```
 
-##
+## 21.
 ```sql
 ```
 
-##
+## 22.
 ```sql
+```
+
+## 23.
+```sql
+```
+
+## 24.
+```sql
+```
+
+## 25.
+```sql
+```
+
+## 26.
+```sql
+```
+
+## 27.
+```sql
+```
+
+## 28.
+```sql
+```
+
+## 29.使用join查询方式找出没有分类的电影id以及名称
+```sql
+SELECT f.film_id,f.title
+FROM film AS f
+LEFT OUTER JOIN film_category AS fc
+ON f.film_id = fc.film_id
+WHERE fc.category_id IS NULL
+```
+
+## 30.使用子查询的方式找出属于Action分类的所有电影对应的title,description
+```sql
+SELECT title,description
+FROM film
+WHERE film_id IN (SELECT film_id -- id有多个时应该使用in而不是=
+            FROM film_category 
+            WHERE category_id = (SELECT category_id
+                                 FROM category 
+                                 WHERE name = 'Action')
+)
+```
+
+## 31.
+```sql
+```
+
+## 32.
+```sql
+```
+
+## 33.创建一个actor表，包含如下列信息
+```sql
+CREATE TABLE actor(
+    actor_id smallint(5) not null primary key,
+    first_name varchar(45) not null,
+    last_name varchar(45) not null,
+    last_update timestamp not null default (datetime('now','localtime'))
+)
+```
+
+## 34.批量插入数据
+```sql
+INSERT INTO actor
+VALUES (1, 'PENELOPE', 'GUINESS', '2006-02-15 12:34:33'),
+(2, 'NICK', 'WAHLBERG', '2006-02-15 12:34:33')
+```
+
+## 35.对于表actor批量插入如下数据,如果数据已经存在，请忽略，不使用replace操作
+```sql
+# SQLite写法
+insert or IGNORE into actor
+values(3,'ED','CHASE','2006-02-15 12:34:33');
+
+#Mysql中
+insert IGNORE into actor
+values(3,'ED','CHASE','2006-02-15 12:34:33');
+```
+
+## 36.创建一个actor_name表，将actor表中的所有first_name以及last_name导入改表。
+```sql
+#SQLite
+CREATE table actor_name AS
+SELECT first_name,last_name
+FROM actor;
+
+#Mysql可以去掉AS 也可以不去
+CREATE table actor_name
+SELECT first_name,last_name
+FROM actor;
+```
+
+## 37.对first_name创建唯一索引uniq_idx_firstname，对last_name创建普通索引idx_lastname
+```sql
+#创建唯一索引
+CREATE UNIQUE INDEX uniq_idx_firstname ON actor(first_name);
+#创建普通索引
+CREATE INDEX idx_lastname ON actor(last_name);
+```
+
+## 38.针对actor表创建视图actor_name_view
+```sql
+CREATE VIEW actor_name_view AS
+SELECT first_name AS first_name_v,last_name AS last_name_v
+FROM actor
+```
+
+## 39.针对salaries表emp_no字段创建索引idx_emp_no，查询emp_no为10005, 使用强制索引
+```sql
+#SQLite中，使用 INDEXED BY 语句进行强制索引查询，可参考：
+SELECT * FROM salaries INDEXED BY idx_emp_no WHERE emp_no = 10005
+
+#MySQL中，使用 FORCE INDEX 语句进行强制索引查询，可参考：
+SELECT * FROM salaries FORCE INDEX idx_emp_no WHERE emp_no = 10005
+```
+
+## 40.在last_update后面新增加一列名字为create_date
+```sql
+ALTER table actor ADD create_date datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ```
