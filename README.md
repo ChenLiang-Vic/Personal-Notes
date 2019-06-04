@@ -16,7 +16,7 @@
 - [SQL语法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/SQL.md)
 - [SQL练习(leetcode+牛客网)](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/leetcode%26%E7%89%9B%E5%AE%A2%E7%BD%91%E9%A2%98%E8%A7%A3.md)
 - [深入理解MySQL](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MYSQL.md)
-- [数据库设计](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1.md)
+- [数据库原理与设计](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E4%B8%8E%E8%AE%BE%E8%AE%A1.md)
 - [Redis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/Redis.md)
 ## Java
 - [java基础](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%9F%BA%E7%A1%80.md)
