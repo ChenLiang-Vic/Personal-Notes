@@ -308,8 +308,6 @@ public class Demo {
 
         //二维数组，每一维度可以长度不同，内存中存的是每个数组的地址
         int[][] b = {{1,2},{3,4,5},{6,7,8,9}};
-
-
         System.out.println(str);  //直接输出的是地址，可以循环输出或者使用Arrays工具类
         //循环1
         for(int i=0;i<str.length;i++) {
@@ -575,10 +573,158 @@ public final void wait() throws InterruptedException
 
 #### equals()
 #### hashCode()
+#### toString()
+#### clone()
 ### 4.时间相关类
+#### Date类
+构造方法
+- Date()
+初始化一个Date对象，测量一个当前最近的毫秒值。数值是从1970年1月1日00:00:00到当前系统时间的毫秒值。，存在一定时差跟底层操作系统有关。
+
+- Date(long date)
+指定一个毫秒值创建Date对象，这里指定的是从1970年1月1日00:00:00起到指定时间所经历的毫秒值。
+
+常用方法  
+
+- setTime(long time)   为当前Date对象设置毫秒值
+- getTime()       返回Date对象的毫秒值转换成long类型返回。
+
+```java
+import java.util.Date;//使用Date类需要导包，注意是util包下的Date不是sql包下的。
+ 
+public class Datetest {
+    public static void main(String[] args) {
+        Date d = new Date();
+        // 直接打印输出的是Date的日期格式
+        System.out.println(d);// Thu May 03 20:13:36 CST 2018
+        // 使用指定的毫秒值创建Date对象
+        Date d2 = new Date(1000);  
+        // 这里因为是基于底层操作系统的时间计算的所以存在时差，当前操作系统是从1970年1月1日8：00开始计算时间的
+        System.out.println(d2);// Thu Jan 01 08:00:01 CST 1970
+        d.setTime(1000);// 为Date对象设置时间
+        System.out.println(d);// Thu Jan 01 08:00:01 CST 1970
+        Date d3 = new Date();
+        long i = d3.getTime();// 将Date对象传换成毫秒值。
+        System.out.println(i);// 1525349616789
+
+    }
+}
+```
+#### DateFormat类
+把时间对象转化成指定格式的字符串。反之，把指定格式的字符串转化成时间对象。
+
+DateFormat是一个抽象类，一般使用它的的子类SimpleDateFormat类来实现。
+
+常用构造方法:
+
+SimpleDateFormat(String pattern)  使用规定的格式来创建一个SimpleDateFormat类对象。 一般为yyyy-MM-dd  hh:mm:ss 表示    年-月-日     时:分:秒。
+
+常用方法:
+- format(Date date) 使用SimpleDateFormat对象将Date类对象转化成String类型，括号中的参数需要给定一个Date类对象。
+
+- parse(String source)通过SimpleDateFormat对象将指定字符串通过SimpleDateFormat中指定的格式解析成Date类对象的日期格式。需要注意如果给定的字符串格式不符合SimpleDateFormat中规定的格式将会发生异常ParseException。
+
+```java
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+ 
+public class Demo {
+    public static void main(String[] args) throws ParseException {
+        
+        //Date转String（格式化）
+        Date d = new Date(); 
+        System.out.println(d);  //Tue Nov 20 20:33:44 CST 2018
+        
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
+
+        String s1 = sdf1.format(d); 
+        System.out.println(s1);  //2018-11-20 20:31:07
+        String s2 = sdf2.format(d);
+        System.out.println(s2);  //2018年11月20日 20时31分07秒
+        
+        //String转Date（解析）
+        String str = "1970-1-2 0:0:0";
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d2 = sdf2.parse(str);
+        System.out.println(d2);  //Fri Jan 02 00:00:00 CST 1970
+	} 
+}
+```
+#### Calender类
+Calendar 类是一个抽象类，为我们提供了关于日期计算的相关功能，比如：年、月、日、时、分、秒的展示和计算。
+
+GregorianCalendar 是 Calendar 的一个具体子类，提供了世界上大多数国家/地区使用的标准日历系统。
+
 
 ### 5.Math类
+java.lang.Math包含执行基本数字运算的方法，如基本指数，对数，平方根和三角函数。基本上学过的一些基本运算都包含。
+
+计算高等数学中的相关内容，可以使用apache commons下面的Math类库。
+
+随便写几个常用方法，其他的用的时候再查api
+
+```java
+public class TestMath {
+    public static void main(String[] args) {
+        //取整相关操作
+        System.out.println(Math.ceil(3.2)); //向上取整  4.0
+        System.out.println(Math.floor(3.2));  //向下取整  3.0
+        System.out.println(Math.round(3.2));  //四舍五入  3
+        System.out.println(Math.round(3.8));  //四舍五入  4
+        //绝对值、开方、a的b次幂等操作
+        System.out.println(Math.abs(-45));  //绝对值 45
+        System.out.println(Math.sqrt(64));  //开根  8.0
+        System.out.println(Math.pow(5, 2));  //5的平方  25.0
+        System.out.println(Math.pow(2, 5));  //2的5次方  32.0
+        //Math类中常用的常量
+        System.out.println(Math.PI);  //3.141592653589793
+        System.out.println(Math.E);  //2.718281828459045
+        //[0,1)范围随机数
+        System.out.println(Math.random());  //0.8817756624530653
+    }
+}
+```
 
 ### 6.Random类
+java.util.Random用来获取伪随机数
+
+构造方法
+- Random()   创建一个新的随机数对象。  
+- Random(long seed)  使用一个种子数创建一个新的随机数对象。
+
+在进行随机时，随机算法的起源数字称为种子数(seed)，在种子数的基础上进行一定的变换，从而产生需要的随机数字。
+
+
+相同种子数的Random对象，相同次数生成的随机数字是完全相同的。也就是说，两个种子数相同的Random对象，第一次生成的随机数字完全相同，第二次生成的随机数字也完全相同。
+
+再次强调：种子数只是随机算法的起源数字，和生成的随机数字的区间无关。
+
+常用方法 
+- nextInt()  获取一个随机数,它的范围是在int类型范围之内。
+- nextInt(int n)   获取随机数,它的范围是在0到n之间，不包含n。
+
+```java
+public class Demo {
+	public static void main(String[] args) {
+		Random r = new Random(10);
+		Random r1 = new Random(10);
+		//初始种子数相同，产生的随机数完全相同
+		for (int i = 0; i < 10; i++) {
+			System.out.println(r.nextInt()+"====="+r1.nextInt());
+		}
+
+		Random r2 = new Random();
+		//产生int范围内的随机数
+		System.out.println(r2.nextInt());
+		//产生[0,n)范围内的随机数，注意是左避右开
+		System.out.println(r2.nextInt(10)); //4
+	}
+}
+```
+当然上面的示例只是整数，同样其他类型的数字也都可以，比如r.nextDouble(1),产生[0,1.0)区间的小数。
+
+另外，生成任意非从0开始的小数区间[d1,d2)范围的随机数字(其中d1不等于0)，则只需要首先生成[0,d2-d1)区间的随机数字，然后将生成的随机数字区间加上d1即可。即double x = d1+r.r.nextDouble(d2-d1)。 整数同理
 
 ## 
