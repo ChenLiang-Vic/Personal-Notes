@@ -1,8 +1,8 @@
 
-## 一、运行时数据区域
+# 一、运行时数据区域
  ![jvm数据区域](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/jvm%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%9F%9F%20.png)
 
-### 程序计数器
+## 程序计数器
 **程序计数器是一块较小的内存空间**，可以看做是**当前线程所执行的字节码的行号指示器**。 字节码解释器工作时就是**通过改变这个计数器的值来选取下一跳需要执行的字节码指令**，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个技术器完成
 
 由于java虚拟机多线程是通过线程轮流切换并分配处理器执行时间的方式来实现的，任何一个时刻，一个处理器（多核处理器是一个内核）都只会执行一条线程中的指令。因此为了线程切换后能恢复到正确的执行位置，**每条线程有一个独立的程序计数器**。
@@ -11,7 +11,7 @@
 
 此内存区域是**唯一一个在java虚拟机规范中没有规定任何OutOfMemoryError情况的区域**。
 
-### Java虚拟机栈
+## Java虚拟机栈
 每个**方法在执行的同时会创建一个栈帧用于存储局部变量表、操作数栈、常量池引用等信息**。从方法调用直至执行完成的过程，对应着一个栈帧在 Java 虚拟机栈中入栈和出栈的过程。  
 
 ![java虚拟机栈](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88.png)
@@ -31,7 +31,7 @@ java虚拟机栈可能抛出以下异常：
 - 当线程请求的栈深度超过最大值，会抛出 StackOverflowError 异常；
 - 栈进行动态扩展时如果无法申请到足够内存，会抛出 OutOfMemoryError 异常。
 
-### 本地方法栈
+## 本地方法栈
 本地方法栈与Java虚拟机栈类似，它们之间的区别只不过是虚拟机栈为虚拟机执行java方法服务，而**本地方法栈为虚拟机使用到的Native方法服务**。
 
 本地方法一般是用其它语言（C、C++ 或汇编语言等）编写的，并且被编译为基于本机硬件和操作系统的程序，对待这些方法需要特别处理。
@@ -39,7 +39,7 @@ java虚拟机栈可能抛出以下异常：
 ![本地方法栈](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88.png)
 
 与虚拟机栈一样，本地方法栈区域也会抛出StackOverflowError和 OutOfMemoryError异常
-### Java堆
+## Java堆
 Java堆是**被所有线程共享**的一块内存区域，在虚拟机启动时创建。唯一作用就是**用来存放对象实例**。
 
 Java堆是垃圾收集器管理的主要区域，因此也称为“GC堆”。现代的垃圾收集器基本都是采用分代收集算法，其主要的思想是针对不同类型的对象采取不同的垃圾回收算法。可以将堆分成两块：
@@ -55,7 +55,7 @@ java堆并且可以动态增加其内存，如果在堆中没有内存完成实�
 ```
 java -Xms1M -Xmx2M HackTheJava
 ```
-### 方法区
+## 方法区
 方法区与java堆一样，是**各个线程共享**的内存区域，用于**存储已被虚拟机加载的类信息、常量、静态变量、即时编译后的代码等数据**。
 
 方法区和堆一样不需要连续的内存，并且可以动态扩展，动态扩展失败一样会抛出OutOfMemoryError异常。
@@ -65,23 +65,23 @@ java -Xms1M -Xmx2M HackTheJava
 HotSpot 虚拟机把它当成永久代来进行垃圾回收。但很难确定永久代的大小，因为它受到很多因素影响，并且每次 Full GC 之后永久代的大小都会改变，所以经常会抛出 OutOfMemoryError 异常。为了更容易管理方法区，**从 JDK 1.8 开始，移除永久代，并把方法区移至元空间，它位于本地内存中，而不是虚拟机内存中。**
 
 方法区是一个 JVM 规范，永久代与元空间都是其一种实现方式。在 JDK 1.8 之后，原来永久代的数据被分到了堆和元空间中。元空间存储类的元信息，静态变量和常量池等放入堆中。
-### 运行时常量池
+## 运行时常量池
 **运行时常量池是方法区的一部分，Class文件中的常量池（编译器生成的字面量和符号引用）会在类加载后被放入这个区域**
 
 运行时常量池相对于Class文件常量池还具备动态性，允许运行期间将新的常量放入池中，例如 String 类的 intern()方法。
 
 既然是运行时常量池是方法区的一部分，自然会受到方法区内存的限制，当常量池无法再申请到内存时抛出OutOfMemoryError异常
-### 直接内存
+## 直接内存
 直接内存并不是虚拟机运行时数据区的一部分。但是这部分内存被频繁使用，而且也可能导致OutOfMemoryError异常。
 
 
 在 JDK 1.4 中新引入了 NIO 类，引入了一种基于通道与缓冲区的I/O方式，它可以使用 Native 函数库直接分配堆外内存，然后通过 Java 堆里的 DirectByteBuffer 对象作为这块内存的引用进行操作。这样能在一些场景中显著提高性能，因为避免了在堆内存和堆外内存来回拷贝数据。
 
-## 二、垃圾收集
+# 二、垃圾收集
 垃圾收集主要是针对堆和方法区进行。程序计数器、虚拟机栈和本地方法栈这三个区域属于线程私有的，只存在于线程的生命周期内，线程结束之后就会消失，因此不需要对这三个区域进行垃圾回收。
 
-### 判断对象是否要被回收
-#### 1.引用计数算法
+## 判断对象是否要被回收
+### 1.引用计数算法
 
 为对象添加一个引用计数器，当对象增加一个引用时计数器加 1，引用失效时计数器减 1。引用计数为 0 的对象可被回收。
 
@@ -116,7 +116,7 @@ java -XX:+PrintGCDetails Test  //运行 -XX:+PrintGCDetails表示输出GC详细�
 
 在上述代码中，a 与 b 引用的对象实例互相持有了对象的引用，因此当我们把对 a 对象与 b 对象的引用去除之后，由于两个对象还存在互相之间的引用，导致两个 Test 对象无法被回收。但实验结果显示，虚拟机并没有因为这两个对相关相互引用就不回收它们，因此**虚拟机并不是通过引用计数算法来判断对象是否存活**。
 
-#### 2.可达性分析算法
+### 2.可达性分析算法
 
 算法思想是：以 GC Roots的对象为起始点向下进行搜索，可达的对象都是存活的，不可达的对象可被回收。如下图所示,对象object5、object6、object7虽然互相关联，但是它们到GC Roots是不可达的，因此会被判定为可回收对象
 ![可达性分析](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95.png)
@@ -186,7 +186,7 @@ No i'm dead
 
 finalize()方法是java刚诞生时为使C/C++程序员更容易接受它所作出的妥协。它的运行代价高昂，不确定性大无法保证各个对象调用顺序。finalize()能做的所有工作使用try-finally或者其他方式可以做的更好，可以忽略这个方法的存在。
 
-#### 引用类型
+### 引用类型
 无论是通过引用计数算法判断对象的引用数量，还是通过可达性分析算法判断对象的引用链是否可达，判定对象是否存活都与引用有关。
 
 JDK1.2之后，java对引用的概念进行了扩充分为了强引用、软引用、弱引用、虚引用4种，这4中引用程度依次逐渐减弱。
@@ -225,7 +225,7 @@ PhantomReference<Object> pf = new PhantomReference<Object>(obj, null);
 obj = null;
 ```
 
-#### 方法区的回收
+### 方法区的回收
 因为方法区主要存放永久代对象，而永久代对象的回收率比新生代低很多，所以在方法区上进行回收性价比不高。
 
 **永久代的垃圾收集主要是废弃常量的回收和对无用类的卸载**。
@@ -239,8 +239,8 @@ obj = null;
 - 该类对应的 Class 对象没有在任何地方被引用，也就无法在任何地方通过反射访问该类方法。
 
 为了避免内存溢出，在大量使用反射和动态代理的场景都需要虚拟机具备类卸载功能。
-### 垃圾收集算法
-#### 1.标记-清除算法
+## 垃圾收集算法
+### 1.标记-清除算法
 ![标记清除算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4.png)  
 
 标记-清除算法分为两个阶段：
@@ -254,7 +254,7 @@ obj = null;
 - 标记和清除过程效率都不高；
 - 会产生大量不连续的内存碎片，导致无法给大对象分配内存，从而不得不提前触发另一次垃圾收集动作。
 
-#### 2.复制算法
+### 2.复制算法
 ![复制算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E5%A4%8D%E5%88%B6.png)
 
 它将可用内存按容量划分为大小相等的两块，每次只使用其中一块。当着一块的内存用完了，就将还存活的对象复制到另一块上面，然后再把已使用过的内存空间一次清理掉。
@@ -267,7 +267,7 @@ obj = null;
 
 HotSpot 虚拟机的 Eden 和 Survivor 大小比例默认为 8:1，保证了内存的利用率达到 90%。如果每次回收有多于 10% 的对象存活，那么一块 Survivor 就不够用了，此时需要依赖于老年代进行空间分配担保，也就是借用老年代的空间存储放不下的对象。
 
-#### 3.标记-整理算法
+### 3.标记-整理算法
 ![标记整理算法](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png)  
 
 标记过程与标记-清除算法一样，但是后续不是直接对可回收对象进行清理而是让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存。
@@ -276,19 +276,19 @@ HotSpot 虚拟机的 Eden 和 Survivor 大小比例默认为 8:1，保证了内�
 
 不足: 需要移动大量对象，处理效率比较低。
 
-#### 4.分代收集算法
+### 4.分代收集算法
 现在的商业虚拟机采用分代收集算法，它根据对象存活周期将内存划分为几块，不同块采用适当的收集算法。
 
 一般将堆分为新生代和老年代。
 
 - 新生代使用：复制算法
 - 老年代使用：标记 - 清除 或者 标记 - 整理 算法
-### 垃圾收集器
+## 垃圾收集器
 ![垃圾收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8.png)
 
 以上是 HotSpot 虚拟机中的 7 个垃圾收集器，连线表示垃圾收集器可以配合使用。
 
-#### 1.Serial收集器
+### 1.Serial收集器
 Serial/Serial Old收集器
 ![Serial收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/Serial%E6%94%B6%E9%9B%86%E5%99%A8.png)
 
@@ -299,17 +299,17 @@ Serial 翻译为串行，也就是说它以串行的方式执行。
 它的优点是简单高效，在单个 CPU 环境下，由于没有线程交互的开销，因此拥有最高的单线程收集效率。
 
 它是 Client 场景下的默认新生代收集器，因为在该场景下内存一般来说不会很大。它收集一两百兆垃圾的停顿时间可以控制在一百多毫秒以内，只要不是太频繁，这点停顿时间是可以接受的。
-#### 2.ParNew收集器
+### 2.ParNew收集器
 ParNew/Serial Old收集器
 ![ParNew收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/Par%20New%E6%94%B6%E9%9B%86%E5%99%A8.png)
 
 它是 Serial 收集器的多线程版本。
 
 它是 Server 场景下默认的新生代收集器，除了性能原因外，主要是因为除了 Serial 收集器，只有它能与 CMS 收集器配合使用。
-#### 3.Parallel Scavenge收集器
+### 3.Parallel Scavenge收集器
 
 
-#### 4.Serial Old收集器
+### 4.Serial Old收集器
 Serial/Serial Old收集器
 ![Serial Old收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/SerialOld%E6%94%B6%E9%9B%86%E5%99%A8.png)
 
@@ -320,7 +320,7 @@ Serial Old收集器主要是给 Client 场景下的虚拟机使用。如果用�
 - 在 JDK 1.5 以及之前版本（Parallel Old 诞生以前）中与 Parallel Scavenge 收集器搭配使用。
 - 作为 CMS 收集器的后备预案，在并发收集发生 Concurrent Mode Failure 时使用。
 
-#### 5.Parallel Old收集器
+### 5.Parallel Old收集器
 Parallel Scavenge/Parallel Old收集器
 ![Parallel Old收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/Parallel%20Old%E6%94%B6%E9%9B%86%E5%99%A8.png)  
 
@@ -328,7 +328,7 @@ Parallel Old收集器是 Parallel Scavenge 收集器的老年代版本。使用�
 
 在注重吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge 加 Parallel Old 收集器。
 
-#### 6.CMS收集器
+### 6.CMS收集器
 CMS收集器
 ![CMS收集器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/CMS%E6%94%B6%E9%9B%86%E5%99%A8.png)
 
@@ -348,7 +348,7 @@ CMS（Concurrent Mark Sweep)收集器是一种以获取最短回收停顿时间�
 - 无法处理浮动垃圾，可能出现 Concurrent Mode Failure。浮动垃圾是指并发清除阶段由于用户线程继续运行而产生的垃圾，这部分垃圾只能到下一次 GC 时才能进行回收。由于浮动垃圾的存在，因此需要预留出一部分内存，意味着 CMS 收集不能像其它收集器那样等待老年代快满的时候再回收。如果预留的内存不够存放浮动垃圾，就会出现 Concurrent Mode Failure，这时虚拟机将临时启用 Serial Old 来替代 CMS。
 - 标记 - 清除算法导致的空间碎片，往往出现老年代空间剩余，但无法找到足够大连续空间来分配当前对象，不得不提前触发一次 Full GC
 
-#### 7.G1收集器
+### 7.G1收集器
 G1（Garbage-First），它是一款面向服务端应用的垃圾收集器，在多 CPU 和大内存的场景下有很好的性能。HotSpot 开发团队赋予它的使命是未来可以替换掉 CMS 收集器。
 
 ![G1收集器1](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/G1%E6%94%B6%E9%9B%86%E5%99%A81.png)
@@ -357,7 +357,7 @@ G1（Garbage-First），它是一款面向服务端应用的垃圾收集器，�
 
 ![G1收集器3](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/G1%E6%94%B6%E9%9B%86%E5%99%A83.png)
 
-#### 垃圾收集相关常用参数
+### 垃圾收集相关常用参数
 |参数|意义|
 |:--:|:--:|
 |UseSerialGC|	虚拟机运行在Client模式下的默认值，打开此开关后，使用Serial + Serial Old的收集器组合进行内存回收|
@@ -377,8 +377,8 @@ CMSInitiatingOccupancyFraction|	设置CMS收集器在老年代空间被使用多
 UseCMSCompactAtFullCollection|	设置CMS收集器在完成垃圾收集后是否要进行一次内存碎片整理。仅在使用CMS收集器时生效
 CMSFullGCsBeforeCompaction|	设置CMS收集器在进行若干次垃圾收集后再启动一次内存碎片整理。仅在使用CMS收集器时生效
 
-## 三、内存分配与回收策略
+# 三、内存分配与回收策略
 
-## 四、类加载机制
-## 五、内存模型
-## 六、线程安全与锁优化
+# 四、类加载机制
+# 五、内存模型
+# 六、线程安全与锁优化
