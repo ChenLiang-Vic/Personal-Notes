@@ -2,7 +2,7 @@
 
 - [0.数组](#0数组)
     - [基本知识点](#基本知识点)
-    - [数组常用工具类:](#数组常用工具类)
+    - [数组常用工具类](#数组常用工具类)
 - [1.String类](#1string类)
     - [基本知识点](#基本知识点-1)
     - [StringBuilder和StringBuffer](#stringbuilder和stringbuffer)
@@ -19,7 +19,7 @@
 - [4.时间相关类](#4时间相关类)
     - [Date类](#date类)
     - [DateFormat类](#dateformat类)
-    - [Calender类](#calender类)
+    - [Calendar类](#calendar类)
 - [5.Math类](#5math类)
 - [6.Random类](#6random类)
 
@@ -67,7 +67,7 @@ public class Demo {
 }
 
 ```
-### 数组常用工具类:
+### 数组常用工具类
 - System类中提供了数组的拷贝方法
 ```java
 System.arraycopy(Object src, int srcPos,Object dest, int destPos,int length);
@@ -181,31 +181,64 @@ public class TestStringBufferAndBuilder 1{
 先来看一个例子
 ```java
 public class Demo {
-	public static void main(String[] args) {
-		String str1 = "aaa";
-		String str2 = "aaa";
-		String str3 = new String("aaa");
-		
-		System.out.println(str1==str2);  //true
-		System.out.println(str1==str3);  //false
-		System.out.println(str2==str3);  //false
-	}
+    public static void main(String[] args) {
+        String str1 = "aaa";
+        String str2 = "aaa";
+        String str3 = new String("aaa");
+
+        System.out.println(str1==str2);  //true
+        System.out.println(str1==str3);  //false
+        System.out.println(str2==str3);  //false
+        }
 }
 ```
 上面理论上来说str1和str2和str3都是abc,可是为什么str1和str2相等，而str1、str2和str3不相等。
 
 原因：
 1. 直接使用String str = "aaa"这种方式创建的字符串会自动放入字符串常量池中
-2. 对于引用数据类型,==比较的是两个的地址是否相同，如果要比较值是否相同，需要使用equals方法。
+2. 对于引用数据类型,==比较的是两个的地址是否相同。
 
-字符串常量池（String Pool）保存着所有字符串字面量（literal strings）,这些字面量在编译时期就确定。如果是以String str = "aaa"这种方式创建,字符串常量池中已经有了aaa则会将字符串常量池中的引用返回给str1和str2，自然两者相等。
+字符串常量池（String Pool）保存着所有字符串字面量（literal strings）,这些字面量在编译时期就确定。
 
-使用String str3 = new String("aaa");这种方式一共会创建两个字符串对象（前提是 String Pool 中还没有 "aaa" 字符串对象）。
+如果是以String str = "aaa"这种方式创建,"aaa" 属于字符串字面量，因此编译时期会在 String Pool 中创建一个字符串对象，指向这个 "aaa" 字符串字面量。
 
-- "aaa" 属于字符串字面量，因此编译时期会在 String Pool 中创建一个字符串对象，指向这个 "aaa" 字符串字面量；
-- 而使用 new 的方式会在堆中创建一个字符串对象。
+如果使用String str3 = new String("aaa");这种方式,除了在编译期产生"aaa"对象外,还会在堆中创建一个字符串"aaa"对象,并将堆中的地址返回。
 
-另外一个字符串调用 intern() 方法时，如果 String Pool 中已经存在一个字符串和该字符串值相等（使用 equals() 方法进行确定），那么就会返回 String Pool 中字符串的引用；否则，就会在 String Pool 中添加一个新的字符串，并返回这个新字符串的引用。
+所以说上面的str1和str2地址相同,而str3和他们不同,自然出现上述结果。
+
+那么既然他们都是abc,而且我们关心的也是他们字符串的字面量，那么如何才能进行相等判断呢?
+- 使用equals()方法
+String类重写了Object的equals方法,如下。可以看到，对于String类的对象，直接对字符数组中的每个元素挨个进行比较。
+```java
+public boolean equals(Object anObject) {
+        if (this == anObject) {
+            return true;
+        }
+        if (anObject instanceof String) {
+            String anotherString = (String)anObject;
+            int n = value.length;
+            if (n == anotherString.value.length) {
+                char v1[] = value;
+                char v2[] = anotherString.value;
+                int i = 0;
+                while (n-- != 0) {
+                    if (v1[i] != v2[i])
+                        return false;
+                    i++;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+```
+
+```java
+System.out.println(str1.equals(str3));  //true
+```
+
+- 使用intern()方法
+一个字符串调用 intern() 方法时，如果 String Pool 中已经存在一个字符串和该字符串值相等（使用 equals() 方法进行确定），那么就会返回 String Pool 中字符串的引用；否则，就会在 String Pool 中添加一个新的字符串，并返回这个新字符串的引用。
 ```java
 String str4 = str3.intern();
 System.out.println(str1==str4);  //true
@@ -285,6 +318,9 @@ Integer派别：Integer、Short、Byte、Character、Long这几个类的valueOf�
 Double派别：Double、Float的valueOf方法的实现是类似的。每次都返回不同的对象。
 
 ## 3.Object类
+java.lang包中的类，是Java语言中所有类的根类，它中描述的所有方法子类都可以使用，在对象实例化的时候，最终找的就是父类Object。
+
+如果一个类没有特别指定父类，那么默认继承自Object类
 ### 概览
 ```java
 public native int hashCode()
@@ -311,8 +347,109 @@ public final void wait() throws InterruptedException
 ```
 
 ### equals()
+**等价关系**
+1. 自反性  x.equals(x); // true
+2. 对称性 x.equals(y) == y.equals(x); // true
+3. 传递性
+if (x.equals(y) && y.equals(z))
+    x.equals(z); // true;
+4. 一致性 多次调用 equals() 方法结果不变 
+x.equals(y) == x.equals(y); // true
+5. 与 null 的比较  对任何不是 null 的对象 x 调用 x.equals(null) 结果都为 false
+x.equals(null); // false;
+
+**==和equals()**
+- 对于基本类型，== 判断两个值是否相等.对于引用类型，== 判断两个变量是否引用同一个对象。
+- Object类中的equals方法其实就是==,但如果重写了equals方法则会按照重写的equals方法进行比较。比如Srting类的包装类等。
+
+Object类中的equals方法源码如下，可以看到直接是对两个对象的地址值进行比较。
+```java
+public boolean equals(Object obj) {
+    return (this == obj);
+}
+```
+```java
+Integer x = new Integer(1);
+Integer y = new Integer(1);
+System.out.println(x.equals(y)); // true
+System.out.println(x == y);      // false
+```
+**重写equals方法**
+```java
+Student stu1 = new Student("陈",18);
+Student stu2 = new Student("陈",18);
+System.out.println(stu1.equals(stu2));  //false
+```
+因为Student默认继承Object,所以会比较两者的地址。重写Student的equals方法,根据名字和年龄相同则认为两者相同
+```java
+@Override
+public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Student student = (Student) o;
+    return age == student.age &&
+            Objects.equals(name, student.name);
+}
+```
+重写后再次进行比较,值为true
+```java
+System.out.println(stu1.equals(stu2));  //true
+```
 ### hashCode()
+hashCode() 返回散列值，而 equals() 是用来判断两个对象是否等价。等价的两个对象散列值一定相同，但是散列值相同的两个对象不一定等价。
+
+在覆盖 equals() 方法时应当总是覆盖 hashCode() 方法，保证等价的两个对象散列值也相等。
+
+下面的代码中，新建了两个等价的对象，并将它们添加到 HashSet 中。我们希望将这两个对象当成一样的，只在集合中添加一个对象，但是因为 EqualExample 没有实现 hasCode() 方法，因此这两个对象的散列值是不同的，最终导致集合添加了两个等价的对象。
+```java
+EqualExample e1 = new EqualExample(1, 1, 1);
+EqualExample e2 = new EqualExample(1, 1, 1);
+System.out.println(e1.equals(e2)); // true
+HashSet<EqualExample> set = new HashSet<>();
+set.add(e1);
+set.add(e2);
+System.out.println(set.size());   // 2
+```
+理想的散列函数应当具有均匀性，即不相等的对象应当均匀分布到所有可能的散列值上。这就要求了散列函数要把所有域的值都考虑进来。可以将每个域都当成 R 进制的某一位，然后组成一个 R 进制的整数。R 一般取 31，因为它是一个奇素数，如果是偶数的话，当出现乘法溢出，信息就会丢失，因为与 2 相乘相当于向左移一位。
+
+一个数与 31 相乘可以转换成移位和减法：31*x == (x<<5)-x，编译器会自动进行这个优化。
+```java
+@Override
+public int hashCode() {
+    int result = 17;
+    result = 31 * result + x;
+    result = 31 * result + y;
+    result = 31 * result + z;
+    return result;
+}
+```
+
 ### toString()
+通过源码可以看到，返回的是getClass().getName() + "@" + Integer.toHexString(hashCode()这种形式，@前面为包路径，@后面的数值为散列码的无符号十六进制表示。即整个返回的是这个类的地址。
+```java
+public String toString() {
+        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+    }
+```
+
+因为每次调用System.out.println(对象),都是在调用对象的toString()方法。如果想要直接打印出想要的内容，需要重写Object类的toString方法
+```java
+@Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+```
+```java
+Student s = new Student("陈",18);
+//Student没重写toString方法
+System.out.println(s);  //com.company.test.Student@1b6d3586
+
+//Student重写了toString方法
+System.out.println(s);  //Student{name='陈', age=18}
+```
 ### clone()
 
 ## 4.时间相关类
@@ -392,11 +529,58 @@ public class Demo {
 	} 
 }
 ```
-### Calender类
+### Calendar类
 Calendar 类是一个抽象类，为我们提供了关于日期计算的相关功能，比如：年、月、日、时、分、秒的展示和计算。
 
-GregorianCalendar 是 Calendar 的一个具体子类，提供了世界上大多数国家/地区使用的标准日历系统。
+注意：Calendar类因为是抽象类，无法直接创建对象，不过里面提供了静态的getInstance()方法返回来Calendar子类对象。
 
+常用方法：
+```java
+public int get(int field)  //返回给定日历字段的值 
+public void set(int field)  //将给定的日历字段设置为给定值
+public abstract void add(int field, int amount)  //根据日历的规则，为给定的日历字段添加或减去在指定的时间量
+public Date getTime()  //返回一个表示此Calendar的时间值(从历元到现在的毫秒偏移量)
+```
+
+```java
+import java.util.Calendar;
+import java.util.Date;
+
+public class Demo {
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar);  //当前时间2018年6月8日,星期6 16:29:41
+
+        printCalendar(calendar);
+
+        //set方法
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(2016,8,9,20,0,0);
+        printCalendar(calendar1);   //2016年9月9日,星期5 20:0:0
+
+        //add方法
+        calendar1.add(Calendar.YEAR,2);  //calendar1加两年
+        printCalendar(calendar1);  //2018年9月9日,星期日 20:0:0
+
+        //getTime()
+        Date d = calendar.getTime();
+        System.out.println(d);  // Sat Jun 08 16:29:41 CST 2018
+    }
+
+    public static void printCalendar(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int date = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 星期几
+        String week = "" + ((date == 0) ? "日" : date);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+        System.out.printf("%d年%d月%d日,星期%s %d:%d:%d\n", year, month, day,
+                week, hour, minute, second);
+    }
+}
+```
 
 ## 5.Math类
 java.lang.Math包含执行基本数字运算的方法，如基本指数，对数，平方根和三角函数。基本上学过的一些基本运算都包含。
