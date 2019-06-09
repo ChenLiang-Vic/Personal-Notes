@@ -16,6 +16,9 @@
     - [hashCode()](#hashcode)
     - [toString()](#tostring)
     - [clone()](#clone)
+        - [Cloneable接口](#cloneable接口)
+        - [浅拷贝](#浅拷贝)
+        - [深拷贝](#深拷贝)
 - [4.时间相关类](#4时间相关类)
     - [Date类](#date类)
     - [DateFormat类](#dateformat类)
@@ -46,8 +49,9 @@ public class Demo {
         System.out.println(stu[1]);  //姓名mark年龄20
 
         //二维数组，每一维度可以长度不同，内存中存的是每个数组的地址
-        int[][] b = {{1,2},{3,4,5},{6,7,8,9}};
-        System.out.println(str);  //直接输出的是地址，可以循环输出或者使用Arrays工具类
+        int[][] b = new int[3][5];
+        b[0][0] = 1;
+        
         //循环1
         for(int i=0;i<str.length;i++) {
             System.out.println(str[i]);
@@ -451,6 +455,168 @@ System.out.println(s);  //com.company.test.Student@1b6d3586
 System.out.println(s);  //Student{name='陈', age=18}
 ```
 ### clone()
+在某些场景中，我们需要获取到一个对象的拷贝用于某些处理。这时候就可以用到Java中的Object.clone方法进行对象复制，得到一个一模一样的新对象。
+
+我们看一下clone方法的源码：
+```java
+protected native Object clone() throws CloneNotSupportedException;
+```
+可以看到
+- clone方法是native方法，说明这个方法的实现不是在java中，而是由C/C++实现，并编译成.dll文件，由java调用。
+- clone() 是 Object 的 protected 方法，它不是 public，一个类不显式去重写 clone()，其它类就不能直接去调用该类实例的 clone() 方法。(注意protected修饰方法时，对于不是同一个包中的子类不能访问该方法)
+- 返回值是一个Object对象，所以要强制转换才行
+
+#### Cloneable接口
+在Student类中重写clone()方法
+```java
+@Override
+protected Object clone() throws CloneNotSupportedException {
+    return super.clone();
+}
+```
+测试
+```java
+Student stu = new Student("陈",18);
+    try {
+        Student stucopy = (Student) stu.clone();
+    } catch (CloneNotSupportedException e) {
+        e.printStackTrace();
+    }
+```
+会发现上面的程序报错，抛出了 CloneNotSupportedException，这是因为 CloneExample 没有实现 Cloneable 接口。
+
+应该注意的是，clone() 方法并不是 Cloneable 接口的方法，而是 Object 的一个 protected 方法。Cloneable 接口只是规定，如果一个类没有实现 Cloneable 接口又调用了 clone() 方法，就会抛出 CloneNotSupportedException。
+
+现在让学生类实现Cloneable接口后,可以进行拷贝。
+
+#### 浅拷贝
+创建一个新对象，然后将当前对象的非静态字段复制到该对象，如果字段类型是值类型（基本类型）的，那么对该字段进行复制；如果字段是引用类型的，则只复制该字段的引用而不复制引用指向的对象。
+
+Object类中的clone()方法就是浅拷贝
+
+下面进行下测试，在上面的Student类中添加一个简单的Teacher类，就不写了，直接测试。
+```java
+public class Demo {
+    public static void main(String[] args) throws CloneNotSupportedException {
+        Student stu = new Student("陈",18,new Teacher("数学老师",30));
+        Student stucopy = (Student) stu.clone();
+        System.out.println(stu.hashCode());
+        System.out.println(stucopy.hashCode());
+        System.out.println(stu);
+        System.out.println(stucopy);
+
+        stucopy.setAge(20);
+
+        //通过clone出的对象对属性的引用对象进行修改
+        Teacher teacher = stucopy.getTeacher();
+        teacher.setName("英语老师");
+        System.out.println(stu);
+        System.out.println(stucopy);
+    }
+}
+```
+结果如下所示：
+```
+460141958
+1163157884
+Student{name='陈', age=18, teacher=Teacher{name='数学老师', age=30}}
+Student{name='陈', age=18, teacher=Teacher{name='数学老师', age=30}}
+Student{name='陈', age=18, teacher=Teacher{name='英语老师', age=30}}
+Student{name='陈', age=20, teacher=Teacher{name='英语老师', age=30}}
+```
+第1、2句输出说明了原对象与新对象是两个不同的对象。
+第3、4句可以看到拷贝出来的新对象与原对象内容一致
+但是，接着将克隆出的对象里面的信息进行了修改，然后输出发现对于基本类型只有clone出的对象发生了改变。而对于引用类型原对象里面的部分信息也跟着变了，这就跟clone本身的浅拷贝有关系了。
+
+#### 深拷贝
+知道了浅拷贝，深拷贝就很容易理解了，即将引用类型的属性内容也拷贝一份新的。
+
+那么如何实现深拷贝呢？有两种方式：
+- 深拷贝-clone方式
+- 序列化-反序列化对象
+
+**深拷贝-clone方式**
+对于以上演示代码，利用clone方式进行深拷贝无非就是将Teacher类也实现Cloneable，然后对Student的clone方法进行调整。
+
+Teacher类也实现Cloneable，重写clone方法
+```java
+@Override
+protected Object clone() throws CloneNotSupportedException {
+    return super.clone();
+}
+```
+对Student的clone方法进行调整
+```java
+@Override
+protected Object clone() throws CloneNotSupportedException {
+    Student s = (Student) super.clone();
+    //手动对Teacher属性进行clone，并赋值给新的Student对象
+    s.teacher = (Teacher) teacher.clone();
+    return s;
+}
+```
+这个方法实际上就是将Teacher进行了一次浅拷贝，然后将拷贝好的teacher对象赋值给了s。
+
+重新进行测试后,发现只有拷贝的对象属性发生了变化,原对象保持不变。
+
+**序列化-反序列化对象**
+这种方式其实就是将对象转成二进制流，然后再把二进制流反序列成一个java对象，这时候反序列化生成的对象是一个全新的对象，里面的信息与原对象一样，但是所有内容都是一份新的。
+
+这种方式需要注意的地方主要是所有类都需要实现Serializable接口，以便进行序列化操作。
+
+序列化核心代码
+```java
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class DeepClone implements Serializable{
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 利用序列化和反序列化进行对象的深拷贝
+     * @return
+     * @throws Exception
+     */
+    protected Object deepClone() throws Exception{
+        //序列化
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        
+        oos.writeObject(this);
+        
+        //反序列化
+        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        
+        return ois.readObject();
+    }
+}
+```
+Student类和Teacher类都需要实现Serializable接口,对于Student直接继承DeepClone,就不写了。
+
+测试：
+```java
+public class Demo {
+    public static void main(String[] args) throws Exception {
+        Student stu = new Student("陈",18,new Teacher("数学老师",30));
+        Student stucopy = (Student) stu.deepClone();
+
+        //通过clone出的对象对属性的引用对象进行修改
+        Teacher teacher = stucopy.getTeacher();
+        teacher.setName("英语老师");
+        System.out.println(stu);
+        System.out.println(stucopy);
+    }
+}
+```
+```
+Student{name='陈', age=18, teacher=Teacher{name='数学老师', age=30}}
+Student{name='陈', age=18, teacher=Teacher{name='英语老师', age=30}}
+```
+结果可以看到实现了深拷贝。
 
 ## 4.时间相关类
 ### Date类
