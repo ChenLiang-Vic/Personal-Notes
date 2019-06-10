@@ -1,6 +1,30 @@
-# leetcode
+<!-- TOC -->
 
-[leetcode SQL练习](https://leetcode.com/problemset/database/)
+- [175.Combine Two Tables](#175combine-two-tables)
+- [176. Second Highest Salary](#176-second-highest-salary)
+- [177. Nth Highest Salary](#177-nth-highest-salary)
+- [178. Rank Scores](#178-rank-scores)
+- [180. Consecutive Numbers](#180-consecutive-numbers)
+- [181. Employees Earning More Than Their Managers](#181-employees-earning-more-than-their-managers)
+- [182. Duplicate Emails](#182-duplicate-emails)
+- [183. Customers Who Never Order](#183-customers-who-never-order)
+- [184. Department Highest Salary](#184-department-highest-salary)
+- [185. Department Top Three Salaries](#185-department-top-three-salaries)
+- [196. Delete Duplicate Emails](#196-delete-duplicate-emails)
+- [197. Rising Temperature](#197-rising-temperature)
+- [262. Trips and Users](#262-trips-and-users)
+- [595. Big Countries](#595-big-countries)
+- [596. Classes More Than 5 Students](#596-classes-more-than-5-students)
+- [601. Human Traffic of Stadium](#601-human-traffic-of-stadium)
+- [620. Not Boring Movies](#620-not-boring-movies)
+- [626. Exchange Seats](#626-exchange-seats)
+- [627. Swap Salary](#627-swap-salary)
+- [569. Median Employee Salary](#569-median-employee-salary)
+- [570. Managers with at Least 5 Direct Reports](#570-managers-with-at-least-5-direct-reports)
+
+<!-- /TOC -->
+
+[leetcode SQL练习地址](https://leetcode.com/problemset/database/)
 
 ## 175.Combine Two Tables
 
@@ -177,314 +201,10 @@ END;
 ----
 付费题目  大部分为Midium难度 
 ## 569. Median Employee Salary
+```sql
+```
 
 ## 570. Managers with at Least 5 Direct Reports
 ```sql
 
-```
-
-
-# 牛客网
-- [牛客网 SQL练习](https://www.nowcoder.com/ta/sql)
-
-## 1. 查找最晚入职员工的所有信息
-```sql
-SELECT *
-FROM employees
-ORDER BY hire_date DESC
-LIMIT 0,1;
-```
-
-## 2.查找入职员工时间排名倒数第三的员工所有信息
-```sql
-SELECT *
-FROM employees
-ORDER BY hire_date DESC
-LIMIT 2,1;
-```
-
-## 3. 查找各个部门当前(to_date='9999-01-01')领导当前薪水详情以及其对应部门编号dept_no
-```sql
-SELECT s.*,d.dept_no
-FROM salaries AS s
-INNER JOIN dept_manager AS d
-ON d.emp_no = s.emp_no
-WHERE d.to_date = '9999-01-01' AND s.to_date = '9999-01-01';
-```
-
-## 4. 查找所有已经分配部门的员工的last_name和first_name
-```sql
-SELECT e.last_name,e.first_name,d.dept_no
-FROM employees AS e
-INNER JOIN dept_emp AS d
-ON e.emp_no = d.emp_no;
-```
-
-## 5. 查找所有员工的last_name和first_name以及对应部门编号dept_no，也包括展示没有分配具体部门的员工
-```sql
-SELECT e.last_name,e.first_name,d.dept_no
-FROM employees AS e
-LEFT JOIN dept_emp AS d
-ON e.emp_no = d.emp_no;
-```
-
-## 6.查找所有员工入职时候的薪水情况，给出emp_no以及salary， 并按照emp_no进行逆序
-```sql
-SELECT e.emp_no,s.salary
-FROM employees AS e
-INNER JOIN salaries AS s
-ON e.emp_no = s.emp_no AND e.hire_date = s.from_date
-ORDER BY e.emp_no DESC;
-```
-
-## 7.  查找薪水涨幅超过15次的员工号emp_no以及其对应的涨幅次数t  
-本体题目出的有问题，语义不清
-```sql
-SELECT emp_no, COUNT(emp_no) AS t
-FROM salaries 
-GROUP BY emp_no
-HAVING t > 15
-```
-
-## 8.找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示
-```sql
-SELECT DISTINCT salary
-FROM salaries
-WHERE to_date = '9999-01-01'
-ORDER BY salary DESC;
-```
-## 9.获取所有部门当前manager的当前薪水情况，给出dept_no, emp_no以及salary，当前表示to_date='9999-01-01'
-```sql
-SELECT d.dept_no,d.emp_no,s.salary
-FROM dept_manager AS d
-INNER JOIN salaries AS s
-ON d.emp_no = s.emp_no
-WHERE d.to_date = '9999-01-01' AND s.to_date = '9999-01-01';
-```
-
-## 10. 获取所有非manager的员工emp_no
-```sql
-SELECT emp_no
-FROM employees
-WHERE emp_no NOT IN (SELECT emp_no
-                    FROM dept_manager);
-```
-## 11.获取所有员工当前的manager，如果当前的manager是自己的话结果不显示，当前表示to_date='9999-01-01'。
-```sql
-SELECT de.emp_no,dm.emp_no AS manager_no
-FROM dept_emp AS de
-INNER JOIN dept_manager AS dm
-ON de.emp_no <> dm.emp_no AND de.dept_no = dm.dept_no
-WHERE de.to_date = '9999-01-01' AND dm.to_date = '9999-01-01';
-```
-
-## 12.获取所有部门中当前员工薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary
-```sql
-SELECT de.dept_no,de.emp_no,MAX(s.salary)
-FROM dept_emp AS de
-INNER JOIN salaries AS s
-ON de.emp_no = s.emp_no
-WHERE de.to_date = '9999-01-01' AND s.to_date = '9999-01-01'
-GROUP BY de.dept_no;
-```
-## 13. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
-```sql
-SELECT title,COUNT(title) AS t
-FROM titles
-GROUP BY title
-HAVING t >= 2;
-```
-
-## 14. 从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。注意对于重复的emp_no进行忽略。
-```sql
-SELECT title,COUNT(DISTINCT emp_no) AS t
-FROM titles
-GROUP BY title
-HAVING t >= 2;
-```
-
-## 15. 查找employees表所有emp_no为奇数，且last_name不为Mary的员工信息，并按照hire_date逆序排列
-```sql
-SELECT *
-FROM employees
-WHERE emp_no%2 <> 0 AND last_name <> 'Mary'
-ORDER BY hire_date DESC;
-```
-
-## 16.统计出当前各个title类型对应的员工当前薪水对应的平均工资。结果给出title以及平均工资avg。
-```sql
-SELECT t.title,AVG(s.salary) AS avg
-FROM titles AS t
-INNER JOIN salaries AS s
-ON t.emp_no = s.emp_no
-WHERE s.to_date = '9999-01-01' AND t.to_date = '9999-01-01'
-GROUP BY t.title;
-```
-
-## 17. 获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary
-```sql
-SELECT emp_no,salary
-FROM salaries
-WHERE to_date = '9999-01-01'
-ORDER BY salary DESC
-LIMIT 1,1
-```
-
-## 18. 查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，不准使用order by
-```sql
-SELECT e.emp_no,MAX(s.salary) AS salary,e.last_name,e.first_name
-FROM employees AS e
-INNER JOIN salaries AS s
-ON e.emp_no = s.emp_no
-WHERE s.to_date = '9999-01-01'
-AND s.salary not in (SELECT MAX(salary) FROM salaries WHERE to_date = '9999-01-01');
-```
-
-## 19. 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工
-```sql
-SELECT e.last_name,e.first_name,d.dept_name
-FROM employees AS e
-LEFT OUTER JOIN dept_emp AS de
-ON e.emp_no = de.emp_no
-LEFT JOIN departments AS d
-ON de.dept_no = d.dept_no;
-```
-
-## 20. 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅值growth
-```sql
-SELECT ( 
-(SELECT salary FROM salaries WHERE emp_no = 10001 ORDER BY to_date DESC LIMIT 1) -
-(SELECT salary FROM salaries WHERE emp_no = 10001 ORDER BY from_date ASC LIMIT 1)
-) AS growth;
-```
-
-## 21.
-```sql
-```
-
-## 22.
-```sql
-```
-
-## 23.
-```sql
-```
-
-## 24.
-```sql
-```
-
-## 25.
-```sql
-```
-
-## 26.
-```sql
-```
-
-## 27.
-```sql
-```
-
-## 28.
-```sql
-```
-
-## 29.使用join查询方式找出没有分类的电影id以及名称
-```sql
-SELECT f.film_id,f.title
-FROM film AS f
-LEFT OUTER JOIN film_category AS fc
-ON f.film_id = fc.film_id
-WHERE fc.category_id IS NULL
-```
-
-## 30.使用子查询的方式找出属于Action分类的所有电影对应的title,description
-```sql
-SELECT title,description
-FROM film
-WHERE film_id IN (SELECT film_id -- id有多个时应该使用in而不是=
-            FROM film_category 
-            WHERE category_id = (SELECT category_id
-                                 FROM category 
-                                 WHERE name = 'Action')
-)
-```
-
-## 31.
-```sql
-```
-
-## 32.
-```sql
-```
-
-## 33.创建一个actor表，包含如下列信息
-```sql
-CREATE TABLE actor(
-    actor_id smallint(5) not null primary key,
-    first_name varchar(45) not null,
-    last_name varchar(45) not null,
-    last_update timestamp not null default (datetime('now','localtime'))
-)
-```
-
-## 34.批量插入数据
-```sql
-INSERT INTO actor
-VALUES (1, 'PENELOPE', 'GUINESS', '2006-02-15 12:34:33'),
-(2, 'NICK', 'WAHLBERG', '2006-02-15 12:34:33')
-```
-
-## 35.对于表actor批量插入如下数据,如果数据已经存在，请忽略，不使用replace操作
-```sql
-# SQLite写法
-insert or IGNORE into actor
-values(3,'ED','CHASE','2006-02-15 12:34:33');
-
-#Mysql中
-insert IGNORE into actor
-values(3,'ED','CHASE','2006-02-15 12:34:33');
-```
-
-## 36.创建一个actor_name表，将actor表中的所有first_name以及last_name导入改表。
-```sql
-#SQLite
-CREATE table actor_name AS
-SELECT first_name,last_name
-FROM actor;
-
-#Mysql可以去掉AS 也可以不去
-CREATE table actor_name
-SELECT first_name,last_name
-FROM actor;
-```
-
-## 37.对first_name创建唯一索引uniq_idx_firstname，对last_name创建普通索引idx_lastname
-```sql
-#创建唯一索引
-CREATE UNIQUE INDEX uniq_idx_firstname ON actor(first_name);
-#创建普通索引
-CREATE INDEX idx_lastname ON actor(last_name);
-```
-
-## 38.针对actor表创建视图actor_name_view
-```sql
-CREATE VIEW actor_name_view AS
-SELECT first_name AS first_name_v,last_name AS last_name_v
-FROM actor
-```
-
-## 39.针对salaries表emp_no字段创建索引idx_emp_no，查询emp_no为10005, 使用强制索引
-```sql
-#SQLite中，使用 INDEXED BY 语句进行强制索引查询，可参考：
-SELECT * FROM salaries INDEXED BY idx_emp_no WHERE emp_no = 10005
-
-#MySQL中，使用 FORCE INDEX 语句进行强制索引查询，可参考：
-SELECT * FROM salaries FORCE INDEX idx_emp_no WHERE emp_no = 10005
-```
-
-## 40.在last_update后面新增加一列名字为create_date
-```sql
-ALTER table actor ADD create_date datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ```
