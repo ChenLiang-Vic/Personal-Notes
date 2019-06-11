@@ -1,4 +1,20 @@
+<!-- TOC -->
 
+- [mybatis.xml配置](#mybatisxml配置)
+    - [配置结构](#配置结构)
+    - [属性properties](#属性properties)
+    - [设置settings](#设置settings)
+    - [类型别名typeAliases](#类型别名typealiases)
+    - [类型处理器typeHandlers](#类型处理器typehandlers)
+    - [插件plugins](#插件plugins)
+    - [环境配置environments](#环境配置environments)
+        - [environment](#environment)
+        - [transactionManager](#transactionmanager)
+        - [dataSource](#datasource)
+    - [数据库厂商标识databaseIdProvider](#数据库厂商标识databaseidprovider)
+    - [映射器mappers](#映射器mappers)
+
+<!-- /TOC -->
 ## mybatis.xml配置
 ### 配置结构
 MyBatis 的配置文件包含了会深深影响 MyBatis 行为的设置和属性信息。 配置文档的顶层结构如下：
