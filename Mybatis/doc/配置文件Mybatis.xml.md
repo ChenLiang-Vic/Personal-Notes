@@ -176,3 +176,19 @@ MyBatis 可以根据不同的数据库厂商执行不同的语句，是Mybatis�
     </select>
 ```
 ### 映射器mappers
+告诉 MyBatis 到哪里去找映射文件
+
+mapper可以为一个Mapper接口配置映射
+```xml
+<mappers>
+  <mapper class="com.company.mapper.StudentMapper"/>
+  <mapper class="com.company.mapper.TeacherMapper"/>
+</mappers>
+```
+
+也可以将包内的映射器接口实现全部注册为映射器
+```xml
+<mappers>
+  <package name="com.company.mapper"/>
+</mappers>
+```
