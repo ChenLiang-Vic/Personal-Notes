@@ -25,10 +25,10 @@
 - [java并发](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%B9%B6%E5%8F%91.md)
 - [java虚拟机](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E8%99%9A%E6%8B%9F%E6%9C%BA.md)
 ## 框架
-- [Mybatis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/doc/README.md)
-- [Spring](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Spring/doc/README.md)
-- [SpringMVC](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/SpringMVC/doc/README.md) 
-- [SpringBoot](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/SpringBoot/doc/README.md)
+- [Mybatis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/README.md)
+- [Spring](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Spring/README.md)
+- [SpringMVC](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/SpringMVC/README.md) 
+- [SpringBoot](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/SpringBoot/README.md)
 ## python
 ## 工具
 - [Git](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E5%B7%A5%E5%85%B7/doc/Git.md)
