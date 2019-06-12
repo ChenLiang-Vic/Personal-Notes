@@ -1,6 +1,6 @@
 ## Mybatis使用
 - [快速上手](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/doc/%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B.md)
-- [配置文件Mybatis.xml](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/doc/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6Mybatis.xml.md)
+- [配置文件mybatis.xml](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/doc/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6Mybatis.xml.md)
 - [映射文件XXXMapper.xml]()
 - [SQL动态拼接]()
 - [Mybatis高级查询]()
