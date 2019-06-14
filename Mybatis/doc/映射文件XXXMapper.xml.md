@@ -25,50 +25,63 @@
 传入的参数类型可以是基本类型、pojo类或者是map类型。
 参数个数可以是无参数、一个参数或者多个参数。
 
-StudentMapper配置文件
+总结：
+- 无参数
+直接使用即可
+- 单个参数
+直接传入基本类型参数,可以使用任何参数进行占位，但是为了可阅读性使用#{名称}进行占位
+- 多个参数
+  - 可以在接口直接使用@Param()注解
+  - 如果有对应POJO类，直接封装成POJO类，传入对象；使用#{属性名}占位
+  - 如果没有对应POJO类，而且只是临时使用，可以手动封装成Map。使用#{键名}进行占位
+  - 如果没有对应POJO类，但是经常使用，可以创建专门用来数据传输的对象TO(Transfer Object),然后将参数封装成TO再传输
+
+StudentMapper.xml
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.company.mybatis.mapper.StudentMapper">
+
     <!--无参数-->
     <select id="selAll" resultType="student">
         select * from studentinfo
     </select>
 
     <!--单参数基本类型-->
-    <!--因为是单个参数所以使用任何参数但为了便于理解使用名称进行占位-->
+    <!--因为是单个参数所以可以使用任何参数但为了便于理解使用名称进行占位-->
     <!--当然也可以使用arg0,arg1占位,但是不易阅读，最推荐的还是用名称-->
     <select id="selById" resultType="student">
         select * from studentinfo where id = #{id}
     </select>
 
-    <!--单参数引用类型-->
-    <!--使用传入对象的属性名进行占位-->
-    <select id="selByIdName" resultType="student">
-        select * from studentinfo where id = #{id} or name = #{name};
-    </select>
-
-    <!--多参数基本类型-->
-    <!--可以使用arg0 arg1 Param1 Param2进行占位但是不易阅读-->
+    <!--多参数使用注解-->
+    <!--可以不使用注解，直接使用arg0 arg1 Param1 Param2进行占位但是不易阅读-->
     <!--通过在接口上使用@Param("id") int id从而使用id name进行占位  实际是Mybatis自动给我们在底层封装了Map-->
-    <select id="selByIdName2" resultType="student">
+    <select id="selByIdName1" resultType="student">
         select * from studentinfo where id = #{id} or name = #{name};
     </select>
 
-    <!--多参数基本类型和引用类型混用-->
-    <!--可以使用arg0 arg1 Param1 Param2进行占位  即id = #{Param1} or name = #{Param2.name}-->
-    <!--通过在接口上使用@Param("")-->
-    <select id="selByIdName3" resultType="student">
+    <select id="selByIdName2" resultType="student">
         select * from studentinfo where id = #{id} or name = #{s.name}
     </select>
 
-    <!--多参数引用类型-->
-    <!--可以使用arg0 arg1 Param1 Param2进行占位  即id = #{Param1.id} or name = #{Param2.name}-->
-    <!--通过在接口上使用@Param("")-->
-    <select id="selByIdName4" resultType="student">
+    <select id="selByIdName3" resultType="student">
     select * from studentinfo where id = #{s1.id} or name = #{s2.name}
+    </select>
+
+
+    <!--多参数封装成POJO类-->
+    <!--使用传入对象的属性名进行占位-->
+    <select id="selByIdName4" resultType="student">
+        select * from studentinfo where id = #{id} or name = #{name};
+    </select>
+
+    <!--多参数封装成POJO类-->
+    <!--使用传入对象的属性名进行占位-->
+    <select id="selByIdName5" resultType="student">
+        select * from studentinfo where id = #{id} or name = #{name};
     </select>
 </mapper>
 ```
@@ -80,6 +93,7 @@ import com.company.mybatis.pojo.Student;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentMapper {
 
@@ -97,41 +111,49 @@ public interface StudentMapper {
     Student selById(int id);
 
     /**
-     * 单参数引用类型
-     * 根据学生id或姓名查询学生信息
-     * @param student
-     * @return
-     */
-    List<Student> selByIdName(Student student);
-
-    /**
-     * 多参数基本类型
+     * 多参数使用注解(基本类型)
      * @param id
      * @param name
      * @return
      */
-    List<Student> selByIdName2(@Param("id") int id,@Param("name") String name);
+    List<Student> selByIdName1(@Param("id") int id,@Param("name") String name);
 
     /**
-     * 多参数基本类型
+     * 多参数使用注解(基本类型和引用类型)
      * @param id
      * @param student
      * @return
      */
-    List<Student> selByIdName3(@Param("id") int id,@Param("s") Student student);
+    List<Student> selByIdName2(@Param("id") int id,@Param("s") Student student);
 
     /**
-     * 多参数基本类型
+     * 多参数使用注解(引用类型)
      * @param student1
      * @param student2
      * @return
      */
-    List<Student> selByIdName4(@Param("s1") Student student1,@Param("s2") Student student2);
+    List<Student> selByIdName3(@Param("s1") Student student1,@Param("s2") Student student2);
 
+
+    /**
+     * 多参数封装成POJO类
+     * 根据学生id或姓名查询学生信息
+     * @param student
+     * @return
+     */
+    List<Student> selByIdName4(Student student);
+
+    /**
+     * 多参数封装成Map
+     * 根据学生id或姓名查询学生信息
+     * @param map
+     * @return
+     */
+    List<Student> selByIdName5(Map<String,Object> map);
 }
 
 ```
-测试类：
+测试类
 ```java
 package com.company.mybatis.Demo;
 
@@ -144,7 +166,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TestMybatis {
     public static void main(String[] args) throws IOException {
@@ -162,67 +186,70 @@ public class TestMybatis {
             Student student1 = sm.selById(1);
             System.out.println(student1);
 
-            //单参数引用类型
-            Student stu = new Student();
-            stu.setId(1);
-            stu.setName("孙");
-            List<Student> ls1 = sm.selByIdName(stu);
+            //多参数使用注解(基本类型)
+            List<Student> ls1 = sm.selByIdName1(1,"孙");
             System.out.println(ls1);
 
-            //多参数基本类型
-            List<Student> ls2 = sm.selByIdName2(1,"孙");
-            System.out.println(ls2);
-
-            //多参数基本类型引用类型混用
+            //多参数使用注解(基本类型和引用类型)
             Student stu1 = new Student();
             stu1.setName("孙");
-            List<Student> ls3 = sm.selByIdName3(1,stu1);
-            System.out.println(ls3);
+            List<Student> ls2 = sm.selByIdName2(1,stu1);
+            System.out.println(ls2);
 
-            //多参数引用类型
+            //多参数使用注解(引用类型)
             Student stu2 = new Student();
             stu2.setId(1);
             Student stu3 = new Student();
             stu3.setName("孙");
-            List<Student> ls4 = sm.selByIdName4(stu2,stu3);
+            List<Student> ls3 = sm.selByIdName3(stu2,stu3);
+            System.out.println(ls3);
+
+            //多参数封装成POJO类
+            Student stu4 = new Student();
+            stu4.setId(1);
+            stu4.setName("孙");
+            List<Student> ls4 = sm.selByIdName4(stu4);
             System.out.println(ls4);
+
+            //多参数封装成Map
+            Map<String,Object> map = new HashMap<>();
+            map.put("id",1);
+            map.put("name","孙");
+            List<Student> ls5 = sm.selByIdName5(map);
+            System.out.println(ls5);
 
         }finally{
             session.close();
         }
     }
 }
+
 ```
 
 ### 结果映射
-结果映射主要有以下三种,重点掌握ResultMap
 - 自动映射
-- 驼峰
+- 驼峰规则
 - resultMap
 
 **自动映射**
-注意到我们上面所写的返回类型resultType一直是Student,就是在使用自动映射。
+注意到我们的数据库中studentinfo表中的字段名和我们的Student实体类的字段名相同，这其实就是使用了Mybatis的自动映射(Auto Mapping)。
 
-什么是自动映射呢？
-Mybatis会将
+Mybatis的自动映射是将查询结果中列名与返回值类型中的实体类中的属性名相同的自动进行映射。
 
-**驼峰转换**
 
-**reseultMap**
+
+**驼峰规则**
+从经典数据库列名 a_column 到经典 Java 属性名 aColumn 的自动映射。
+
+默认是关闭，可以在mybatis.xml中配置生效
+```xml
+<setting name="mapUnderscoreToCamelCase" value="true"/>
+```
+
+比如我们的student表中的字段为id,t_name,age 而我们Student实体类为id,tname,age。那么如果不开启自动驼峰映射的话查出的name属性会为null。开启后即可直接映射。
+
+**resultMap**
+
 
 ## 单表增删改
-增删改和查询基本一样,先写几个简单的示例,然后我们关注增删改所特有的特性。
 
-简单实例
-StudentMapper.xml
-```xml
-
-```
-StudentMapper接口
-```java
-
-```
-测试类
-```java
-
-```
