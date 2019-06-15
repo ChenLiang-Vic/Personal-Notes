@@ -228,9 +228,32 @@ public class TestMybatis {
 
 ### 结果映射
 查询结果可以是int类型、POJO类型、map类型、List类型
-int类型是增删改时的返回值类型。POJO类型和List类型直接指定resultType="pojo类"即可。
+int类型是增删改时的返回值类型。POJO类型和List类型直接指定resultType="pojo类"即可。对于Map类型会自动将列名设置为键，查询结果设置为值。 下面简单演示下返回结果为Map类型
 
-
+```xml
+<!--返回一个结果-->
+<select id="selById" resultType="map">
+    select * from studentinfo where id = #{id}
+</select>
+<!--返回多个结果-->
+<select id="selById2" resultType="map">
+    select * from studentinfo
+```
+接口
+```java
+//返回一个结果
+Map<String,Object> selById(int id);
+//返回多个结果
+List<Map<String,Object>> selById2();
+```
+测试
+```java
+StudentMapper sm = session.getMapper(StudentMapper.class);
+Map<String,Object> map = sm.selById(1);
+System.out.println(map);
+List<Map<String,Object>> ls = sm.selById2();
+System.out.println(ls);
+```
 
 
 映射规则有：
@@ -294,6 +317,8 @@ Mybatis的自动映射是将查询结果中列名与返回值类型中的实体�
 </select>
 ```
 
+resultMap标签中id用来唯一标识一个resultMap,type用来表示返回类型，可以是POJO也可以是map
+
 ## 单表增删改
 增删改和查询基本上是一样的，只不过要注意对于增删改默认是不自动提交的我们需要手动commit或者rollback。
 
@@ -325,9 +350,43 @@ try{
 ```
 
 **使用主键自增**
+使用主键自增,插入时没有什么问题，主要是如果想要获得自增的主键值该怎么办？
+
+```xml
+<insert id="insStudent" useGeneratedKeys="true" keyProperty="id">
+    insert into studentinfo values(default,#{name},#{age})
+</insert>
+```
+可以看到和之前的insert语句相比增加了`useGeneratedKeys="true" keyProperty="id"`
+
+useGeneratedKeys="true"开启判断是否是自增ID
+keyProperty="id"  指定插入数据后自增ID返回时赋值给实体类的那个属性(这里是id属性)
+
+在测试类中获得自增id
+```java
+StudentMapper sm = session.getMapper(StudentMapper.class);
+Student student = new Student();
+student.setName("王");
+student.setAge(19);
+int i = sm.insStudent(student);
+System.out.println(student.getId());
+session.commit();
+```
 
 **不使用主键自增**
+mysql是有主键自增的，但是oracle数据库没有主键自增，一般是使用序列得到一个值，然后将这个值赋给id再将数据插入到数据库中。
 
+对于这种方式可以使用<selectKey>标签获取主键值，这种方式适用于不提供主键自增的数据库，也适用于提供主键自增的数据库。
+
+```xml
+    </insert><insert id="insStudent">
+        insert into studentinfo values(null,#{name},#{age})
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+```
+可以看到与原来相比多了<selectKey>标签，其中keyProperty和keyColumn用来配置id列返回到哪个属性，order用来表示返回执行前或 执行后的id值。对于mysql来说是先插入再主键自增所以是AFTER,对于Oracle来说是先获得一个序列值再插入所以是BEFORE
 
 
 ### 修改
@@ -359,3 +418,65 @@ Mybatis注解的方式就是将SQL语句直接写在接口上。
 
 一般情况下不使用注解的方式。这里只做简单介绍。
 
+StudentMapper接口：
+```java
+import com.company.pojo.Student;
+import org.apache.ibatis.annotations.*;
+
+
+public interface StudentMapper {
+    //查询@Select
+    // 注意""可以写好后再换行,IDEA会自动加""
+    @Select({"select * " +
+            "from studentinfo " +
+            "where id = #{id}"})  
+    Student selById(int id);
+    
+    //使用resultMap手动映射
+    //id用来唯一标识一个映射,可以用来继承映射
+    //value表示具体的映射，其中的id = true 表明是主键
+    @Results(id = "resultmap1",value = {
+            @Result(property = "id",column = "id", id = true),
+            @Result(property = "name",column = "name"),
+            @Result(property = "age",column = "age")
+    })
+    @Select({"select * " +
+            "from studentinfo " +
+            "where id = #{id}"})
+    Student selById2(int id);
+    
+    //插入@Insert
+    @Insert({"insert into studentinfo" +
+            " values(default,#{name},#{age})"})
+    int insStudent(Student student);
+
+    //返回自增主键
+    @Insert({"insert into studentinfo" +
+            " values(default,#{name},#{age})"})
+    @Options(useGeneratedKeys = true,keyProperty = "id")
+    int insStudent2(Student student);
+
+    //返回非自增主键
+    //before = false等同于AFTER
+    @Insert({"insert into studentinfo" +
+            " values(default,#{name},#{age})"})
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()",
+                keyProperty = "id",
+                resultType = int.class,
+                before = false)
+    int insStudent3(Student student);
+    
+    //修改@Update()
+    @Update({"update studentinfo" +
+            "set name =#{name}," +
+            "age = #{age}" +
+            "where id = #{id}"})
+    int upStudent(Student student);
+    //删除@Delete()
+    
+    @Delete({"delete from studentinfo" +
+            "where id = #{id}"})
+    int delStudent(int id);
+}
+
+```
