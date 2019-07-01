@@ -1,6 +1,4 @@
 
-## 概念
-
 ## 创建对象的三种方式
 ### 构造器方式 
 applicationcontext.xml
