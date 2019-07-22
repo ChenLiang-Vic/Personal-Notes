@@ -52,7 +52,7 @@ Mybatis对数据库中的事务进行了抽象，其自身提供了相应的事�
 
 Mybatis中的一级缓存和二级缓存都依赖于基础支持层中的缓存模块实现。
 
-注意Mybatis中自带的这两级缓存与Mybatis以及整个
+注意Mybatis中自带的这两级缓存与Mybatis以及整个应用是运行在同一个JVM中的，共享同一块堆内存。如果这两级缓存中的数据量较大，则可能影响系统中其他功能的运行，所以当需要缓存大量数据时，优先考虑使用Redis等缓存产品。
 
 ![缓存示意图](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/img/%E7%BC%93%E5%AD%98%E6%A8%A1%E5%9D%97.png)
 #### Binding模块
