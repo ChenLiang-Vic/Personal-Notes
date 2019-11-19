@@ -6,7 +6,7 @@
 - [剑指offer](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87offer/README.md)
 ## 操作系统
 - [操作系统](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/README.md)
-- [linux](https://github.com/ChenLiang-Vic/Personal-Notes/blob/master/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux.md)
+- [Linux](https://github.com/ChenLiang-Vic/Personal-Notes/blob/master/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux.md)
 ## 计算机网络
 - [计算机网络](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/README.md)
 - [HTTP](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/doc/HTTP.md)
@@ -18,11 +18,11 @@
 - [数据库原理与设计](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E4%B8%8E%E8%AE%BE%E8%AE%A1.md)
 - [Redis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E6%95%B0%E6%8D%AE%E5%BA%93/doc/Redis.md)
 ## Java
-- [java基础](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%9F%BA%E7%A1%80.md)
-- [java容器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%AE%B9%E5%99%A8.md)
-- [java I/O和NIO](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%20IO.md)
-- [java并发](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%B9%B6%E5%8F%91.md)
-- [java虚拟机](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E8%99%9A%E6%8B%9F%E6%9C%BA.md)
+- [Java基础](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%9F%BA%E7%A1%80.md)
+- [Java容器](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%AE%B9%E5%99%A8.md)
+- [Java I/O和NIO](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%20IO.md)
+- [Java并发](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E5%B9%B6%E5%8F%91.md)
+- [Java虚拟机](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/doc/java%E8%99%9A%E6%8B%9F%E6%9C%BA.md)
 ## 框架
 - [Mybatis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/README.md)
 - [Spring](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Spring/README.md)
