@@ -26,13 +26,15 @@
 ## 框架
 - [Mybatis](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Mybatis/README.md)
 - [Spring](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/Spring/README.md)
-- [SpringMVC](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/SpringMVC/README.md) 
+- [SpringMVC](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/SpringMVC/README.md)
 - [SpringBoot](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/SpringBoot/README.md)
 ## 面向对象
 - [设计模式](https://github.com/ChenLiang-Vic/Personal-Notes/blob/master/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/doc/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md)
 ## 工具
 - [Git](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E5%B7%A5%E5%85%B7/doc/Git.md)
-- [Maven](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E5%B7%A5%E5%85%B7/doc/Maven.md)
+- [构建工具](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E5%B7%A5%E5%85%B7/doc/Maven.md)
+- [正则表达式](https://github.com/ChenLiang-Vic/Personal-Notes/blob/master/%E5%B7%A5%E5%85%B7/doc/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
+- [Docker](https://github.com/ChenLiang-Vic/Personal-Notes/blob/master/%E5%B7%A5%E5%85%B7/doc/Docker.md)
 ## 编码实践
 - [代码可读性](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/doc/%E4%BB%A3%E7%A0%81%E5%8F%AF%E8%AF%BB%E6%80%A7.md)
 - [代码风格规范](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/doc/%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E8%A7%84%E8%8C%83.md)
