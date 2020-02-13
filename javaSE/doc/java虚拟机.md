@@ -1,6 +1,6 @@
 
 # 一、运行时数据区域
- <div align=center>![jvm数据区域](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/jvm%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%9F%9F%20.png)
+ <div align=center>![jvm数据区域](https://github.com/ChenLiang-Vic/Personal-notes/blob/master/javaSE/img/jvm%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%9F%9F%20.png)</div>
 
 ## 程序计数器
 **程序计数器是一块较小的内存空间**，可以看做是**当前线程所执行的字节码的行号指示器**。 字节码解释器工作时就是**通过改变这个计数器的值来选取下一跳需要执行的字节码指令**，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个技术器完成
