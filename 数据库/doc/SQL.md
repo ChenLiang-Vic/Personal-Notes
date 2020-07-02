@@ -379,6 +379,7 @@ SELECT AVG(DISTINCT prod_price) AS avg_price
 FROM products;
 ```
 - **文本处理函数**
+
 | 函数  | 说明  |
 | :---: | :---: |
 |  LEFT() |  左边的字符 |
@@ -489,7 +490,6 @@ ORDER BY
 **当查询条件不明确时，考虑使用子查询。这里的不明确是指没有具体的数值，需要经过一次查询后才能获得的数值。**
 
 注意：**作为子查询的SELECT语句只能查询单个列，查询多个列时会出错。**
-- 查询结果只有一个数据
 ```sql
 #查询比平均价格高的商品信息
 SELECT *
@@ -569,7 +569,7 @@ ON v.vend_id = p.vend_id;
 ### 外联结
 许多联结将一个表中的行与另一个表中的行相关联，但有时候需要包含没有关联行的那些行。外联结则保留了没有关联的那些行。分为左外联结，右外联结以及全外联结。
 表student:
-| id | name | age |
+| stu_id | stu_name | stu_age |
 |:--:|:--:|:--:|
 | 1 | Jim | 18
 | 2 | Lucy | 16 |
@@ -578,18 +578,18 @@ ON v.vend_id = p.vend_id;
 | 5 | Hanmeimei | 16 |
 
 表mark:
-| id | subject | grade |
-|:--:|:--:|:--:|
-| 1 | English | 90 |
-| 1 | Math | 80 |
-| 2 | English | 95 |
-| 2 | Math | 70 |
-| 3 | English | 70 |
-| 3 | Math | 80 |
-| 4 | English | 80 |
-| 4 | Math | 80 |
-| 8 | English | 90 |
-| 8 | Math | 90 |
+| m_id | stu_id | m_subject | m_grade |
+|:--:|:--:|:--:|:--:|
+|1   | 1 | English | 90 |
+|2   | 1 | Math | 80 |
+|3   | 2 | English | 95 |
+|4   | 2 | Math | 70 |
+|5   | 3 | English | 70 |
+|6   | 3 | Math | 80 |
+|7   | 4 | English | 80 |
+|8   | 4 | Math | 80 |
+|9   | 8 | English | 90 |
+|10   | 8 | Math | 90 |
 表info：
 | id | city | district |
 |:--:|:--:|:--:|
@@ -766,8 +766,8 @@ bit(8) 表示8个二进制的位
 ```sql
 # 基本模式
 CREATE TABLE temp (
-	id INT(10) PRIMARY KEY,
-	NAME VARCHAR (20)
+	id INT PRIMARY KEY,
+	name VARCHAR (20)
 );
 
 # 组合模式
@@ -789,7 +789,7 @@ ALTER TABLE temp DROP PRIMARY KEY;
 ALTER TABLE temp ADD PRIMARY KEY (id, NAME);
 
 # 修改主键约束
-ALTER TABLE temp MODIFY id INT PRIMARY key；
+ALTER TABLE temp MODIFY id INT PRIMARY key;
 ```
 - **外键约束 FOREIGN KEY** 
 当一张表的某个字段的值需要依赖另外一张表的某个字段的值，则使用外键约束其中主动依赖的表称为**子表**，被依赖的表称为**父表**。**外键加在子表中**
@@ -932,6 +932,7 @@ DROP TABLE custcopy;
 视图的好处：
 1. 重用SQL语句，对于复杂点的SQL语句将它创建为视图后可以方便的重用
 2. 因为视图可以使用表的一部分而不是整个表，所以可以保护原来表中的一些重要数据。
+表的访问权限。
 3. 视图可以更改数据格式和表示。
 
 ```sql
